@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-<rect width="64" height="64" rx="12" fill="#09090a"/>
-<rect x="5" y="5" width="54" height="54" rx="10" fill="none" stroke="#373738" stroke-width="1.5"/>
-<text x="32" y="39" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" fill="#f4f1e9">F/N</text>
-<circle cx="46" cy="46" r="2.5" fill="#d8ff30"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Farah Naz">
+  <rect width="64" height="64" rx="12" fill="#09090a"/>
+  <path d="M7 9h21v8H16v8h10v8H16v22H7z" fill="#f4f1e9"/>
+  <path d="M31 52 38 12h6l-7 40z" fill="#d8ff30"/>
+  <path d="M40 9h8l9 26V9h7v46h-8L47 29v26h-7z" fill="#f4f1e9"/>
 </svg>
