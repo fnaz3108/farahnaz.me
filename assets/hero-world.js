@@ -1,9 +1,6 @@
-import './footer-fn.js';
-
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { createFNSignature, animateFNSignature, SIGNATURE_YELLOW } from './fn-signature.js';
 
 const host = document.querySelector('#hero3DWorld');
 const canvas = document.querySelector('#heroWorldCanvas');
@@ -13,8 +10,6 @@ const exploreBtn = document.querySelector('#heroWorldExplore');
 const heroSection = document.querySelector('.hero');
 
 if (!host || !canvas) throw new Error('3D hero host not found');
-
-document.documentElement.style.setProperty('--accent', '#e8b93f');
 
 const renderer = new THREE.WebGLRenderer({
   canvas,
@@ -53,9 +48,6 @@ scene.add(key);
 const fill = new THREE.DirectionalLight(0x9db8ff, .55);
 fill.position.set(-5, 3, 2);
 scene.add(fill);
-const signatureLight = new THREE.PointLight(0xffdf83, 3.4, 5.2, 2);
-signatureLight.position.set(2.7, 3.0, -2.1);
-scene.add(signatureLight);
 
 const world = new THREE.Group();
 world.scale.setScalar(1.55);
@@ -65,7 +57,6 @@ scene.add(world);
 const clickable = [];
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
-const signaturePointer = new THREE.Vector2();
 
 function roundedRect(ctx, x, y, w, h, r) {
   const rr = Math.min(r, w/2, h/2);
@@ -107,6 +98,7 @@ function makeTextTexture({
     ctx.textAlign = l.align || 'left';
     ctx.textBaseline = 'top';
     if(l.letterSpacing){
+      // manual spacing for small labels
       let x=l.x||0;
       for(const ch of l.text){
         ctx.fillText(ch,x,l.y||0);
@@ -161,7 +153,6 @@ function makeRing(radius, color, opacity, position, rotation, thickness=.012){
 }
 
 let rings=[];
-let signature=null;
 let homePosition=new THREE.Vector3(0.20,1.82,-4.85);
 let homeTarget=new THREE.Vector3(-0.10,1.22,0.10);
 
@@ -178,8 +169,13 @@ loader.load(
       }
     });
 
+    // Keep actual model scale. Position composition slightly right so UI can
+    // occupy the left side as part of the same 3D scene.
     model.position.set(.15,-.18,-.10);
 
+    // --------------------
+    // 3D BRAND / UI PLANES
+    // --------------------
     const nameTex = makeTextTexture({
       width:1400,height:720,
       lines:[
@@ -190,8 +186,19 @@ loader.load(
         {text:'to final frame.',x:44,y:580,size:34,font:'Arial',weight:400,color:'#d0cdc6'},
       ]
     });
+    // V3.22: FARAH / NAZ is restored as the original DOM overlay, not a camera-bound 3D plane.
 
-    signature = createFNSignature(world);
+
+    const logoTex = makeTextTexture({
+      width:256,height:128,
+      lines:[{text:'F/N',x:20,y:18,size:56,font:'Arial',weight:800,color:'#f5f1e8'}]
+    });
+    makePlane({
+      w:.68,h:.34,texture:logoTex,
+      position:[-3.15,3.42,1.10],
+      rotation:[0,THREE.MathUtils.degToRad(13),0],
+      name:'logo'
+    });
 
     const navTex = (label)=>makeTextTexture({
       width:300,height:120,bg:'rgba(8,8,10,.30)',
@@ -204,10 +211,12 @@ loader.load(
     makePlane({w:.82,h:.33,texture:navTex('ABOUT'),position:[.58,navY,.35],rotation:[0,0,0],name:'nav-about',action:'about'});
     makePlane({w:.94,h:.33,texture:navTex('CONTACT'),position:[1.60,navY,.35],rotation:[0,0,0],name:'nav-contact',action:'contact'});
 
+    // V3.23: portfolio CTA removed from the 3D world; the normal HTML CTA remains.
+
     const availTex=makeTextTexture({
       width:420,height:120,
       lines:[
-        {text:'●',x:20,y:25,size:36,font:'Arial',weight:700,color:'#e8b93f'},
+        {text:'●',x:20,y:25,size:36,font:'Arial',weight:700,color:'#d8ff30'},
         {text:'AVAILABLE',x:70,y:28,size:30,font:'Arial',weight:600,color:'#f5f1e8',letterSpacing:2}
       ]
     });
@@ -218,8 +227,9 @@ loader.load(
       name:'availability'
     });
 
+    // Large geometric circles, now literally in the 3D scene.
     rings = [
-      makeRing(2.25,SIGNATURE_YELLOW,.26,[2.05,2.0,-1.10],[THREE.MathUtils.degToRad(90),0,0],.012),
+      makeRing(2.25,0xd8ff30,.26,[2.05,2.0,-1.10],[THREE.MathUtils.degToRad(90),0,0],.012),
       makeRing(1.45,0xffffff,.10,[.40,1.15,.20],[THREE.MathUtils.degToRad(88),THREE.MathUtils.degToRad(12),0],.009)
     ];
 
@@ -251,6 +261,11 @@ loader.load(
   }
 );
 
+
+
+// Keep the Explore / Exit control available throughout the hero,
+// independent of the WebGL camera. Hide it only when the hero itself
+// is no longer on screen.
 if(heroSection && 'IntersectionObserver' in window){
   const heroVisibility = new IntersectionObserver(([entry])=>{
     heroSection.classList.toggle('hero-out-of-view', !entry.isIntersecting);
@@ -274,6 +289,7 @@ exploreBtn?.addEventListener('click',()=>{
   set3DMode(!is3DActive);
 });
 
+
 window.addEventListener('scroll',()=>{
   if(!heroSection || !is3DActive) return;
   const r = heroSection.getBoundingClientRect();
@@ -281,6 +297,7 @@ window.addEventListener('scroll',()=>{
     set3DMode(false);
   }
 },{passive:true});
+
 
 window.addEventListener('keydown',e=>{
   if(e.key === 'Escape' && is3DActive){
@@ -303,15 +320,11 @@ function pointerToNDC(e){
 }
 
 canvas.addEventListener('pointermove',e=>{
-  pointerToNDC(e);
-  signaturePointer.lerp(pointer,.12);
   if(!is3DActive) return;
+  pointerToNDC(e);
   raycaster.setFromCamera(pointer,camera);
   const hit=raycaster.intersectObjects(clickable,false)[0];
   canvas.style.cursor=hit?'pointer':'grab';
-});
-canvas.addEventListener('pointerleave',()=>{
-  pointer.set(0,0);
 });
 canvas.addEventListener('click',e=>{
   if(!is3DActive) return;
@@ -338,6 +351,7 @@ window.addEventListener('resize',resize,{passive:true});
 function animate(now){
   controls.update();
 
+  // Ultra-subtle autonomous circle motion.
   if(rings.length){
     const t=now*.00012;
     rings[0].rotation.z=Math.sin(t)*.08;
@@ -345,9 +359,6 @@ function animate(now){
     rings[1].rotation.z=-Math.sin(t*.8)*.06;
     rings[1].position.y=1.08+Math.cos(t*.5)*.04;
   }
-
-  signaturePointer.lerp(pointer,.025);
-  animateFNSignature(signature, now, signaturePointer);
 
   renderer.render(scene,camera);
   requestAnimationFrame(animate);
