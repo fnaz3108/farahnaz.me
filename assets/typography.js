@@ -3,9 +3,11 @@ fontLink.rel = 'stylesheet';
 fontLink.href = 'https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap';
 document.head.appendChild(fontLink);
 
+document.documentElement.style.setProperty('--accent', '#e8b93f');
+
 const style = document.createElement('style');
 style.textContent = `
-  :root{--font-sans:'Manrope','Helvetica Neue',Helvetica,sans-serif;}
+  :root{--font-sans:'Manrope','Helvetica Neue',Helvetica,sans-serif;--accent:#e8b93f;}
   body{font-family:var(--font-sans);}
   .hero h1{
     font-family:var(--font-sans);
@@ -46,5 +48,9 @@ style.textContent = `
   .contact h2 em{
     font-family:Georgia,'Times New Roman',serif;
   }
+  .orbit{border-color:rgba(232,185,63,.5);}
+  .face{border-color:rgba(232,185,63,.55);}
+  .edge{background:rgba(232,185,63,.55);}
+  .webgl-fallback{border-color:rgba(232,185,63,.28);}
 `;
 document.head.appendChild(style);
