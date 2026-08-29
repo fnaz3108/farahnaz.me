@@ -1,4 +1,3 @@
-// Typography-only layer. Keeps layout and interaction code untouched.
 const fontLink = document.createElement('link');
 fontLink.rel = 'stylesheet';
 fontLink.href = 'https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap';
@@ -13,6 +12,11 @@ style.textContent = `
     font-weight:800;
     letter-spacing:-.065em;
     line-height:.76;
+  }
+  .hero h1 span:last-child{
+    color:rgba(22,22,23,.96);
+    -webkit-text-stroke:1px rgba(255,255,255,.78);
+    paint-order:stroke fill;
   }
   .brand,
   .site-header nav,
