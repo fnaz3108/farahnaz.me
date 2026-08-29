@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Farah Naz — 3D Artist, Modeler & Visualizer." />
+  <title>Farah Naz — 3D Artist & Visualizer</title>
+  <link rel="stylesheet" href="assets/styles.css" />
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.185.1/examples/jsm/"
+    }
+  }
+  </script>
+
+</head>
+<body>
+
+  <div class="site-preloader" id="sitePreloader" aria-live="polite" aria-label="Loading portfolio">
+    <div class="preloader-geometry-wrap" aria-hidden="true">
+      <canvas id="preloaderGeometry"></canvas>
+    </div>
+    <div class="preloader-percent" id="preloaderPercent">0%</div>
+    <div class="preloader-line" aria-hidden="true">
+      <span id="preloaderLineFill"></span>
+    </div>
+  </div>
+
+  <div class="cursor" aria-hidden="true"><span>VIEW</span></div>
+  <div class="scroll-progress" aria-hidden="true"><i></i></div>
+
+  <header class="site-header">
+    <a class="brand" href="#home" aria-label="Farah Naz home">F/N</a>
+    <button class="nav-toggle" id="navToggle" type="button"
+      aria-label="Open menu" aria-controls="mainNav" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav aria-label="Main navigation" class="main-nav" id="mainNav">
+      <a href="#home" class="nav-link nav-home is-active" data-nav-section="home" aria-label="Home" title="Home">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.75 10.15 12 4.25l7.25 5.9v8.35a1.25 1.25 0 0 1-1.25 1.25h-4.1v-5.2h-3.8v5.2H6a1.25 1.25 0 0 1-1.25-1.25z"/></svg>
+      </a>
+      <a href="#work" class="nav-link" data-nav-section="work">Work</a>
+      <a href="#about" class="nav-link" data-nav-section="about">About</a>
+      <a href="#contact" class="nav-link" data-nav-section="contact">Contact</a>
+    </nav>
+    <span class="availability"><i></i> Available</span>
+  </header>
+
+  <main>
+    <section id="home" class="hero scene-section">
+      <div class="hero-3d-world" id="hero3DWorld">
+        <canvas id="heroWorldCanvas" aria-label="Interactive Farah Naz 3D portfolio hero"></canvas>
+        <div class="hero-world-status" id="heroWorldStatus">BUILDING 3D HERO…</div>
+        <div class="hero-wire-orbits" id="heroWireOrbits" aria-hidden="true">
+        <span class="hero-wire-circle wire-circle-a"></span>
+        <span class="hero-wire-circle wire-circle-b"></span>
+        <span class="hero-wire-circle wire-circle-c"></span>
+      </div>
+      <div class="hero-world-actions">
+          <button class="hero-world-explore" id="heroWorldExplore" type="button">EXPLORE 3D</button>
+          <button class="hero-world-reset" id="heroWorldReset" type="button">RESET VIEW</button>
+        </div>
+      </div>
+
+      <div class="hero-grid" aria-hidden="true"></div>
+      <div class="hero-copy" data-depth="0.20">
+        <p class="kicker">3D ARTIST · MODELER · VISUALIZER</p>
+        <h1><span>FARAH</span><span>NAZ</span></h1>
+        <p class="hero-note">Objects, spaces and visual worlds — shaped from idea to final frame.</p>
+        <a class="hero-link" href="#work">Explore selected work <b>↘</b></a>
+      </div>
+
+      <div class="hero-stage" id="heroStage" aria-label="Interactive portfolio cube">
+        <div class="orbit orbit-a"></div>
+        <div class="orbit orbit-b"></div>
+
+        <div class="portfolio-cube-shell" id="portfolioCubeShell">
+          <div class="cube-shadow" aria-hidden="true"></div>
+          <div class="portfolio-cube" id="portfolioCube" role="img" aria-label="Drag to rotate a cube showing six Farah Naz portfolio projects">
+            <div class="cube-face cube-front"><img src="assets/portfolio/watch/watch-render-hires.webp" alt="Pocket Watch project" /><span>01 / OBJECT</span></div>
+            <div class="cube-face cube-right"><img src="assets/portfolio/interior-exterior/exterior-building-hires.webp" alt="Interior and exterior visualization project" /><span>02 / SPACE</span></div>
+            <div class="cube-face cube-back"><img src="assets/images/transformer.png" alt="Transformer project" /><span>03 / FORM</span></div>
+            <div class="cube-face cube-left"><img src="assets/images/noomf.png" alt="Noomf Coffee project" /><span>04 / PRODUCT</span></div>
+            <div class="cube-face cube-top"><img src="assets/images/castle.png" alt="Castle environment project" /><span>05 / WORLD</span></div>
+            <div class="cube-face cube-bottom"><img src="assets/images/throne.png" alt="Throne Chair project" /><span>06 / DETAIL</span></div>
+          </div>
+          <div class="cube-drag-hint"><i></i><span>DRAG TO EXPLORE</span></div>
+        </div>
+      </div>
+      <div class="scroll-label">SCROLL TO ENTER <span>↓</span></div>
+    </section>
+
+    <section id="work" class="work scene-section">
+      <div class="gallery-circle-field" id="galleryCircleField" aria-hidden="true">
+        <span class="gallery-circle gallery-circle-a"></span>
+        <span class="gallery-circle gallery-circle-b"></span>
+        <span class="gallery-circle gallery-circle-c"></span>
+        <span class="gallery-circle gallery-circle-d"></span>
+      </div>
+      <div class="section-intro">
+        <p class="kicker">SELECTED WORK / 2011—2026</p>
+        <h2>A portfolio with<br><em>depth.</em></h2>
+        <p>Move through the work. Click any piece to enter the project without leaving the site.</p>
+      </div>
+
+      <div class="spatial-gallery" id="spatialGallery">
+        <button class="work-card card-a" data-project="pocket" style="--rz:-5deg;--z:90px;--x:0px;" aria-label="Open Pocket Watch project">
+          <span class="card-index">01</span><span class="card-slideshow" aria-hidden="true"><img class="card-slide is-active" src="assets/portfolio/watch/watch-render-hires.webp" alt="" loading="lazy" decoding="async" /><img class="card-slide" src="assets/portfolio/watch/watch-exploded-hires.webp" alt="" loading="lazy" decoding="async" /><img class="card-slide" src="assets/portfolio/watch/watch-movement-hires.webp" alt="" loading="lazy" decoding="async" /><img class="card-slide" src="assets/portfolio/watch/watch-wireframe-hires.png" alt="" loading="lazy" decoding="async" /></span>
+          <span class="card-info"><small>PRODUCT VISUALIZATION</small><strong>Pocket Watch</strong></span>
+        </button>
+        <button class="work-card card-b" data-project="interior" style="--rz:4deg;--z:20px;--x:40px;" aria-label="Open Interior & Exterior project">
+          <span class="card-index">02</span><span class="card-slideshow" aria-hidden="true"><img class="card-slide is-active" src="assets/portfolio/interior-exterior/interior-living-hires.webp" alt="" loading="lazy" decoding="async" /><img class="card-slide" src="assets/portfolio/interior-exterior/interior-kitchen-hires.webp" alt="" loading="lazy" decoding="async" /><img class="card-slide" src="assets/portfolio/interior-exterior/interior-lounge-hires.webp" alt="" loading="lazy" decoding="async" /><img class="card-slide" src="assets/portfolio/interior-exterior/exterior-building-hires.webp" alt="" loading="lazy" decoding="async" /></span>
+          <span class="card-info"><small>SPACE / ENVIRONMENT</small><strong>Interior & Exterior</strong></span>
+        </button>
+        <button class="work-card card-c" data-project="transformer" style="--rz:-3deg;--z:120px;--x:-30px;" aria-label="Open Transformer project">
+          <span class="card-index">03</span><span class="card-slideshow" aria-hidden="true"><img class="card-slide is-active" src="assets/portfolio/transformer/transformer-full-hires.webp" alt="" loading="lazy" decoding="async" /><img class="card-slide" src="assets/portfolio/transformer/transformer-closeup-hires.webp" alt="" loading="lazy" decoding="async" /><img class="card-slide" src="assets/portfolio/transformer/transformer-wireframe-hires.webp" alt="" loading="lazy" decoding="async" /></span>
+          <span class="card-info"><small>HARD SURFACE</small><strong>Transformer</strong></span>
+        </button>
+        <button class="work-card card-d" data-project="coffee" style="--rz:5deg;--z:50px;--x:20px;" aria-label="Open Noomf Coffee project">
+          <span class="card-index">04</span><span class="card-slideshow" aria-hidden="true"><img class="card-slide is-active" src="assets/portfolio/noomf/noomf-hero-hires.webp" alt="" loading="lazy" decoding="async" /><img class="card-slide" src="assets/portfolio/noomf/noomf-back-hires.webp" alt="" loading="lazy" decoding="async" /><img class="card-slide" src="assets/portfolio/noomf/noomf-mushroom-hires.webp" alt="" loading="lazy" decoding="async" /></span>
+          <span class="card-info"><small>PRODUCT / PACKAGING</small><strong>Noomf Coffee</strong></span>
+        </button>
+        <button class="work-card card-e" data-project="castle" style="--rz:-4deg;--z:75px;--x:-20px;" aria-label="Open Castle project">
+          <span class="card-index">05</span><span class="card-slideshow" aria-hidden="true"><img class="card-slide is-active" src="assets/images/castle.png" alt="" loading="lazy" decoding="async" /></span>
+          <span class="card-info"><small>ENVIRONMENT</small><strong>Castle</strong></span>
+        </button>
+        <button class="work-card card-f" data-project="throne" style="--rz:3deg;--z:35px;--x:30px;" aria-label="Open Throne Chair project">
+          <span class="card-index">06</span><span class="card-slideshow" aria-hidden="true"><img class="card-slide is-active" src="assets/images/throne.png" alt="" loading="lazy" decoding="async" /></span>
+          <span class="card-info"><small>OBJECT MODELING</small><strong>Throne Chair</strong></span>
+        </button>
+      </div>
+    </section>
+
+    <section id="about" class="about scene-section">
+      <div class="about-object" aria-hidden="true">
+        <canvas id="aboutParticleSphere" class="about-particle-cube"></canvas>
+        <div class="portrait-orbit"><img src="assets/images/farah-portrait.png" alt="" /></div>
+        <span class="about-object-hint">MOVE TO REVEAL</span>
+      </div>
+      <div class="about-copy">
+        <p class="kicker">ABOUT FARAH</p>
+        <h2>Thinking in<br><em>three dimensions.</em></h2>
+        <p class="lead">Farah Naz is a 3D artist and modeler with 10+ years of experience across product visualization, environments, exhibitions, animation and motion.</p>
+        <div class="skill-cloud">
+          <span>3D Modeling</span><span>Product Visualization</span><span>Environment Design</span><span>Exhibition Design</span><span>Lighting</span><span>Texturing</span><span>Animation</span><span>Motion</span>
+        </div>
+        <p class="tools">BLENDER · MAYA · 3DS MAX · CINEMA 4D · AFTER EFFECTS</p>
+      </div>
+    </section>
+
+    <section id="contact" class="contact scene-section">
+      <div class="contact-copy">
+        <p class="kicker">CONTACT / LET'S MAKE SOMETHING</p>
+        <h2>Have an idea<br>that needs <em>dimension?</em></h2>
+        <div class="contact-row">
+          <a href="mailto:fnaz3108@gmail.com">EMAIL <span>↗</span></a>
+          <a href="https://www.behance.net/Nfarah" target="_blank" rel="noreferrer">BEHANCE <span>↗</span></a>
+          <a href="https://www.linkedin.com/in/farah-naz/" target="_blank" rel="noreferrer">LINKEDIN <span>↗</span></a>
+        </div>
+      </div>
+      <div class="contact-sculpture particle-cube-wrap" id="contactSculpture" aria-hidden="true">
+        <canvas id="particlePyramid" class="particle-cube-canvas"></canvas>
+        <span class="sculpture-note">MOVE THROUGH THE PARTICLES</span>
+      </div>
+    </section>
+  </main>
+
+  <footer><span>FARAH NAZ © <b id="year"></b></span><span>KARACHI, PAKISTAN · AVAILABLE WORLDWIDE</span></footer>
+
+  <div class="project-view" id="projectView" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="projectTitle">
+    <button class="project-close" type="button" aria-label="Close project">CLOSE ×</button>
+    <div class="project-view-inner">
+      <div class="project-hero">
+        <img id="projectImageBg" class="project-image-bg" alt="" aria-hidden="true">
+      <img id="projectImage" src="" alt="" />
+        <div class="project-title-wrap">
+          <p id="projectType"></p>
+          <h2 id="projectTitle"></h2>
+          <p id="projectDescription"></p>
+        </div>
+      </div>
+      <div class="project-story">
+        <div><small>ROLE</small><strong id="projectRole"></strong></div>
+        <div><small>FOCUS</small><strong id="projectFocus"></strong></div>
+        <div><small>OUTPUT</small><strong id="projectOutput"></strong></div>
+      </div>
+      <div class="project-frames">
+        <figure class="project-frame frame-one"><img id="detailOne" src="" alt="Project detail" /></figure>
+        <figure class="project-frame frame-two"><img id="detailTwo" src="" alt="Project detail" /></figure>
+        <figure class="project-frame frame-three"><img id="detailThree" src="" alt="Project process / wireframe" /></figure>
+      </div>
+      <button class="project-next" type="button">NEXT PROJECT <span>→</span></button>
+    </div>
+  </div>
+
+  <script type="module" src="assets/preloader.js"></script>
+  <script type="module" src="assets/hero-world.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>
