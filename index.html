@@ -3,44 +3,73 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Farah Naz — 3D Artist & Visualizer</title>
-  <meta name="description" content="Portfolio of Farah Naz, a 3D artist, modeler and visualizer creating detailed objects, spaces and visual worlds." />
-  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <title>Farah Naz — 3D Artist, Modeler & Visualizer</title>
+  <meta name="description" content="Farah Naz is a 3D artist and modeler creating product visualization, architectural environments, exhibition design, animation and detailed 3D worlds." />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="author" content="Farah Naz" />
   <meta name="theme-color" content="#09090a" />
+  <meta name="color-scheme" content="dark" />
   <link rel="canonical" href="https://farahnaz.me/" />
 
-  <link rel="icon" href="/assets/brand/favicon.svg" type="image/svg+xml" />
-  <link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png" sizes="180x180" />
+  <link rel="icon" href="/assets/brand/favicon.svg?v=2" type="image/svg+xml" sizes="any" />
+  <link rel="alternate icon" href="/assets/brand/favicon.ico?v=2" sizes="16x16 32x32 48x48" />
+  <link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png?v=2" sizes="180x180" />
   <link rel="manifest" href="/site.webmanifest" />
 
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Farah Naz Portfolio" />
-  <meta property="og:title" content="Farah Naz — 3D Artist & Visualizer" />
-  <meta property="og:description" content="Objects, spaces and visual worlds — shaped from idea to final frame." />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Farah Naz — 3D Artist, Modeler & Visualizer" />
+  <meta property="og:description" content="Product visualization, architectural environments, exhibition design and detailed 3D worlds." />
   <meta property="og:url" content="https://farahnaz.me/" />
   <meta property="og:image" content="https://farahnaz.me/assets/brand/og-image.png" />
   <meta property="og:image:secure_url" content="https://farahnaz.me/assets/brand/og-image.png" />
   <meta property="og:image:type" content="image/png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Farah Naz — 3D Artist, Modeler and Visualizer" />
+  <meta property="og:image:alt" content="Farah Naz — 3D Artist, Modeler and Visualizer portfolio" />
 
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Farah Naz — 3D Artist & Visualizer" />
-  <meta name="twitter:description" content="Objects, spaces and visual worlds — shaped from idea to final frame." />
+  <meta name="twitter:title" content="Farah Naz — 3D Artist, Modeler & Visualizer" />
+  <meta name="twitter:description" content="Product visualization, architectural environments, exhibition design and detailed 3D worlds." />
   <meta name="twitter:image" content="https://farahnaz.me/assets/brand/og-image.png" />
-  <meta name="twitter:image:alt" content="Farah Naz — 3D Artist, Modeler and Visualizer" />
+  <meta name="twitter:image:alt" content="Farah Naz — 3D Artist, Modeler and Visualizer portfolio" />
+
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="dns-prefetch" href="//cdn.jsdelivr.net" />
 
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Farah Naz",
-    "url": "https://farahnaz.me/",
-    "jobTitle": "3D Artist & Visualizer",
-    "sameAs": [
-      "https://www.behance.net/Nfarah",
-      "https://www.linkedin.com/in/farah-naz/"
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://farahnaz.me/#website",
+        "url": "https://farahnaz.me/",
+        "name": "Farah Naz — 3D Artist, Modeler & Visualizer",
+        "description": "Portfolio of Farah Naz, a 3D artist and modeler specializing in product visualization, environments, exhibitions and animation.",
+        "inLanguage": "en"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://farahnaz.me/#farah-naz",
+        "name": "Farah Naz",
+        "url": "https://farahnaz.me/",
+        "jobTitle": "3D Artist, Modeler & Visualizer",
+        "knowsAbout": [
+          "3D Modeling",
+          "Product Visualization",
+          "Environment Design",
+          "Exhibition Design",
+          "Lighting",
+          "Texturing",
+          "3D Animation"
+        ],
+        "sameAs": [
+          "https://www.behance.net/Nfarah",
+          "https://www.linkedin.com/in/farah-naz/"
+        ]
+      }
     ]
   }
   </script>
@@ -177,7 +206,7 @@
     <section id="about" class="about scene-section">
       <div class="about-object" aria-hidden="true">
         <canvas id="aboutParticleSphere" class="about-particle-cube"></canvas>
-        <div class="portrait-orbit"><img src="assets/images/farah-portrait.png" alt="" /></div>
+        <div class="portrait-orbit"><img src="assets/images/farah-portrait.png" alt="" loading="lazy" decoding="async" /></div>
         <span class="about-object-hint">MOVE TO REVEAL</span>
       </div>
       <div class="about-copy">
@@ -201,21 +230,18 @@
           <a href="https://www.linkedin.com/in/farah-naz/" target="_blank" rel="noreferrer">LINKEDIN <span>↗</span></a>
         </div>
       </div>
-      <div class="contact-sculpture particle-cube-wrap" id="contactSculpture" aria-hidden="true">
-        <canvas id="particlePyramid" class="particle-cube-canvas"></canvas>
-        <span class="sculpture-note">MOVE THROUGH THE PARTICLES</span>
+      <div class="contact-object" id="contactObject" aria-hidden="true">
+        <canvas id="particlePyramid" class="particle-canvas"></canvas>
       </div>
+      <div class="footer-line"><span>FARAH NAZ · KARACHI, PAKISTAN</span><span>© 2026</span></div>
     </section>
   </main>
 
-  <footer><span>FARAH NAZ © <b id="year"></b></span><span>KARACHI, PAKISTAN · AVAILABLE WORLDWIDE</span></footer>
-
-  <div class="project-view" id="projectView" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="projectTitle">
-    <button class="project-close" type="button" aria-label="Close project">CLOSE ×</button>
-    <div class="project-view-inner">
+  <div class="project-view" id="projectView" aria-hidden="true">
+    <div class="project-panel">
+      <button class="project-close" type="button" aria-label="Close project">CLOSE <span>×</span></button>
       <div class="project-hero">
-        <img id="projectImageBg" class="project-image-bg" alt="" aria-hidden="true">
-      <img id="projectImage" src="" alt="" />
+        <img id="projectImage" src="" alt="" decoding="async" />
         <div class="project-title-wrap">
           <p id="projectType"></p>
           <h2 id="projectTitle"></h2>
@@ -228,9 +254,9 @@
         <div><small>OUTPUT</small><strong id="projectOutput"></strong></div>
       </div>
       <div class="project-frames">
-        <figure class="project-frame frame-one"><img id="detailOne" src="" alt="Project detail" /></figure>
-        <figure class="project-frame frame-two"><img id="detailTwo" src="" alt="Project detail" /></figure>
-        <figure class="project-frame frame-three"><img id="detailThree" src="" alt="Project process / wireframe" /></figure>
+        <figure class="project-frame frame-one"><img id="detailOne" src="" alt="Project detail" loading="lazy" decoding="async" /></figure>
+        <figure class="project-frame frame-two"><img id="detailTwo" src="" alt="Project detail" loading="lazy" decoding="async" /></figure>
+        <figure class="project-frame frame-three"><img id="detailThree" src="" alt="Project process / wireframe" loading="lazy" decoding="async" /></figure>
       </div>
       <button class="project-next" type="button">NEXT PROJECT <span>→</span></button>
     </div>
