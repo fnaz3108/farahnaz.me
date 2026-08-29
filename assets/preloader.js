@@ -1,4 +1,3 @@
-
 import * as THREE from 'three';
 
 const root = document.documentElement;
@@ -8,13 +7,13 @@ const lineEl = document.querySelector('#preloaderLineFill');
 const canvas = document.querySelector('#preloaderGeometry');
 
 if (!overlay || !percentEl || !lineEl || !canvas) {
-  // Fail open if markup is missing.
   root.classList.remove('is-loading');
 } else {
   root.classList.add('is-loading');
 
   // ---------------------------
-  // Small morphing wire geometry
+  // Solid clay morph sculpture
+  // Sphere -> Cube -> Pyramid
   // ---------------------------
   const renderer = new THREE.WebGLRenderer({
     canvas,
@@ -24,158 +23,102 @@ if (!overlay || !percentEl || !lineEl || !canvas) {
   });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.6));
   renderer.setClearColor(0x000000,0);
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.0;
 
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(32,1,.1,20);
-  camera.position.set(0,0,5.9);
+  const camera = new THREE.PerspectiveCamera(31,1,.1,20);
+  camera.position.set(0,.03,5.6);
 
   const group = new THREE.Group();
+  group.rotation.set(-.18,.35,.02);
   scene.add(group);
 
-  // Equal-count segment clouds for Cube -> Sphere -> Pyramid.
-  const SEGMENTS = 420;
+  scene.add(new THREE.HemisphereLight(0xf4f1eb,0x3a3936,1.6));
+  const key = new THREE.DirectionalLight(0xffffff,2.4);
+  key.position.set(3.4,4.8,5.2);
+  scene.add(key);
+  const fill = new THREE.DirectionalLight(0xb9b4aa,.72);
+  fill.position.set(-4,1.5,2.2);
+  scene.add(fill);
+  const rim = new THREE.DirectionalLight(0xe8b93f,.28);
+  rim.position.set(-2.5,3,-4);
+  scene.add(rim);
 
-  function sampleEdge(a,b,t){
-    return new THREE.Vector3(
-      THREE.MathUtils.lerp(a.x,b.x,t),
-      THREE.MathUtils.lerp(a.y,b.y,t),
-      THREE.MathUtils.lerp(a.z,b.z,t)
-    );
+  // One dense topology is used for all states so the object truly morphs
+  // instead of swapping between separate meshes.
+  const geom = new THREE.IcosahedronGeometry(1.12,5);
+  const base = geom.attributes.position.array;
+  const sphere = new Float32Array(base.length);
+  const cube = new Float32Array(base.length);
+  const pyramid = new Float32Array(base.length);
+
+  const v = new THREE.Vector3();
+  for(let i=0;i<base.length;i+=3){
+    v.set(base[i],base[i+1],base[i+2]).normalize();
+
+    // Sphere state.
+    sphere[i]=v.x*1.08;
+    sphere[i+1]=v.y*1.08;
+    sphere[i+2]=v.z*1.08;
+
+    // Cube state: radial projection onto a rounded-feeling cube surface.
+    const m=Math.max(Math.abs(v.x),Math.abs(v.y),Math.abs(v.z),.0001);
+    const cx=v.x/m, cy=v.y/m, cz=v.z/m;
+    const round=.84;
+    cube[i]=(cx*round + v.x*(1-round))*1.02;
+    cube[i+1]=(cy*round + v.y*(1-round))*1.02;
+    cube[i+2]=(cz*round + v.z*(1-round))*1.02;
+
+    // Pyramid state: square footprint tapering continuously to a single apex.
+    const ny=(v.y+1)*.5; // 0..1
+    const py=-.92 + ny*2.05;
+    const taper=Math.max(.04,1-ny*.94);
+    const sideScale=1.18*taper;
+    const denom=Math.max(Math.abs(v.x),Math.abs(v.z),.0001);
+    const sx=v.x/denom;
+    const sz=v.z/denom;
+    const edgeMix=.88;
+    pyramid[i]=(sx*edgeMix+v.x*(1-edgeMix))*sideScale;
+    pyramid[i+1]=py;
+    pyramid[i+2]=(sz*edgeMix+v.z*(1-edgeMix))*sideScale;
   }
 
-  const cubeVerts = [
-    new THREE.Vector3(-1,-1,-1),new THREE.Vector3(1,-1,-1),
-    new THREE.Vector3(1,1,-1),new THREE.Vector3(-1,1,-1),
-    new THREE.Vector3(-1,-1,1),new THREE.Vector3(1,-1,1),
-    new THREE.Vector3(1,1,1),new THREE.Vector3(-1,1,1)
-  ];
-  const cubeEdges = [
-    [0,1],[1,2],[2,3],[3,0],
-    [4,5],[5,6],[6,7],[7,4],
-    [0,4],[1,5],[2,6],[3,7]
-  ];
+  const position = geom.attributes.position.array;
+  position.set(sphere);
+  geom.attributes.position.needsUpdate=true;
+  geom.computeVertexNormals();
 
-  const pyramidVerts = [
-    new THREE.Vector3(-1,-1,-1),new THREE.Vector3(1,-1,-1),
-    new THREE.Vector3(1,-1,1),new THREE.Vector3(-1,-1,1),
-    new THREE.Vector3(0,1.16,0)
-  ];
-  const pyramidEdges = [
-    [0,1],[1,2],[2,3],[3,0],
-    [0,4],[1,4],[2,4],[3,4]
-  ];
-
-  function buildEdgeSegments(verts,edges,count){
-    const arr = new Float32Array(count*2*3);
-    for(let i=0;i<count;i++){
-      const edge=edges[i%edges.length];
-      const a=verts[edge[0]], b=verts[edge[1]];
-      const t=(Math.floor(i/edges.length)+.15)/(Math.ceil(count/edges.length)+.3);
-      const p1=sampleEdge(a,b,THREE.MathUtils.clamp(t,0,1));
-      const p2=sampleEdge(a,b,THREE.MathUtils.clamp(t+.075,0,1));
-      const o=i*6;
-      arr[o]=p1.x;arr[o+1]=p1.y;arr[o+2]=p1.z;
-      arr[o+3]=p2.x;arr[o+4]=p2.y;arr[o+5]=p2.z;
-    }
-    return arr;
-  }
-
-  function buildSphereSegments(count){
-    const arr = new Float32Array(count*2*3);
-
-    // Build a continuous wire sphere from latitude + longitude loops.
-    // We intentionally sample complete loops so it reads as solid wire,
-    // not as dotted/disconnected points during the morph.
-    const latLoops = 8;
-    const lonLoops = 10;
-    const totalLoops = latLoops + lonLoops;
-    const segsPerLoop = Math.max(8, Math.floor(count / totalLoops));
-
-    let segmentIndex = 0;
-
-    const writeSeg = (p1,p2)=>{
-      if(segmentIndex >= count) return;
-      const o = segmentIndex * 6;
-      arr[o]   = p1.x; arr[o+1] = p1.y; arr[o+2] = p1.z;
-      arr[o+3] = p2.x; arr[o+4] = p2.y; arr[o+5] = p2.z;
-      segmentIndex++;
-    };
-
-    // Latitude rings.
-    for(let l=1; l<=latLoops; l++){
-      const lat = -Math.PI/2 + (l/(latLoops+1))*Math.PI;
-      const r = Math.cos(lat);
-      const y = Math.sin(lat);
-
-      for(let s=0; s<segsPerLoop && segmentIndex<count; s++){
-        const a1 = (s/segsPerLoop)*Math.PI*2;
-        const a2 = ((s+1)/segsPerLoop)*Math.PI*2;
-
-        const p1 = new THREE.Vector3(Math.cos(a1)*r, y, Math.sin(a1)*r);
-        const p2 = new THREE.Vector3(Math.cos(a2)*r, y, Math.sin(a2)*r);
-        writeSeg(p1,p2);
-      }
-    }
-
-    // Longitude rings.
-    for(let l=0; l<lonLoops; l++){
-      const lon = (l/lonLoops)*Math.PI*2;
-
-      for(let s=0; s<segsPerLoop && segmentIndex<count; s++){
-        const a1 = -Math.PI/2 + (s/segsPerLoop)*Math.PI*2;
-        const a2 = -Math.PI/2 + ((s+1)/segsPerLoop)*Math.PI*2;
-
-        const p1 = new THREE.Vector3(
-          Math.cos(a1)*Math.cos(lon),
-          Math.sin(a1),
-          Math.cos(a1)*Math.sin(lon)
-        );
-        const p2 = new THREE.Vector3(
-          Math.cos(a2)*Math.cos(lon),
-          Math.sin(a2),
-          Math.cos(a2)*Math.sin(lon)
-        );
-        writeSeg(p1,p2);
-      }
-    }
-
-    // Fill any remaining slots by repeating valid continuous segments.
-    // This preserves equal morph-buffer length without adding visual gaps.
-    let srcSeg = 0;
-    while(segmentIndex < count){
-      const src = (srcSeg % Math.max(1, segmentIndex)) * 6;
-      const dst = segmentIndex * 6;
-      for(let j=0;j<6;j++) arr[dst+j] = arr[src+j];
-      segmentIndex++;
-      srcSeg++;
-    }
-
-    return arr;
-  }
-
-  const shapes = [
-    buildEdgeSegments(cubeVerts,cubeEdges,SEGMENTS),
-    buildSphereSegments(SEGMENTS),
-    buildEdgeSegments(pyramidVerts,pyramidEdges,SEGMENTS)
-  ];
-
-  const positions = new Float32Array(shapes[0]);
-  const geom = new THREE.BufferGeometry();
-  geom.setAttribute('position',new THREE.BufferAttribute(positions,3));
-
-  const mat = new THREE.LineBasicMaterial({
-    color:0xe9e6df,
-    transparent:true,
-    opacity:1
+  const clay = new THREE.MeshStandardMaterial({
+    color:0xb8b3aa,
+    roughness:.72,
+    metalness:.02,
+    flatShading:false
   });
+  const mesh = new THREE.Mesh(geom,clay);
+  mesh.castShadow=false;
+  mesh.receiveShadow=false;
+  group.add(mesh);
 
-  const lines = new THREE.LineSegments(geom,mat);
-  group.add(lines);
+  // Soft grounding shadow to make the sculpture feel like a studio clay render.
+  const shadowMat = new THREE.MeshBasicMaterial({
+    color:0x000000,
+    transparent:true,
+    opacity:.18,
+    depthWrite:false
+  });
+  const shadow = new THREE.Mesh(new THREE.CircleGeometry(1.18,64),shadowMat);
+  shadow.rotation.x=-Math.PI/2;
+  shadow.scale.set(1,.42,1);
+  shadow.position.set(0,-1.22,.12);
+  group.add(shadow);
 
   function resize(){
     const r=canvas.getBoundingClientRect();
-    renderer.setSize(Math.max(1,r.width),Math.max(1,r.height),false);
-    camera.aspect=Math.max(1,r.width)/Math.max(1,r.height);
+    const w=Math.max(1,r.width), h=Math.max(1,r.height);
+    renderer.setSize(w,h,false);
+    camera.aspect=w/h;
     camera.updateProjectionMatrix();
   }
   resize();
@@ -184,7 +127,7 @@ if (!overlay || !percentEl || !lineEl || !canvas) {
   const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // ---------------------------
-  // Real-ish loading progress
+  // Loading progress
   // ---------------------------
   let heroProgress=0;
   let imageProgress=0;
@@ -199,13 +142,11 @@ if (!overlay || !percentEl || !lineEl || !canvas) {
   });
 
   if(!pageReady){
-    window.addEventListener('load',()=>{ pageReady=1; },{once:true});
+    window.addEventListener('load',()=>{pageReady=1;},{once:true});
   }
 
   const imageUrls=[...new Set(
-    [...document.images]
-      .map(img=>img.currentSrc||img.src)
-      .filter(Boolean)
+    [...document.images].map(img=>img.currentSrc||img.src).filter(Boolean)
   )];
 
   if(!imageUrls.length){
@@ -214,10 +155,7 @@ if (!overlay || !percentEl || !lineEl || !canvas) {
     let done=0;
     imageUrls.forEach(url=>{
       const img=new Image();
-      const settle=()=>{
-        done++;
-        imageProgress=Math.min(1,done/imageUrls.length);
-      };
+      const settle=()=>{done++;imageProgress=Math.min(1,done/imageUrls.length);};
       img.onload=settle;
       img.onerror=settle;
       img.src=url;
@@ -225,10 +163,8 @@ if (!overlay || !percentEl || !lineEl || !canvas) {
   }
 
   function computeTarget(){
-    // Heavy hero GLB carries most of the weight.
     const weighted=(heroProgress*.68)+(imageProgress*.24)+(pageReady*.08);
-    // Avoid reaching 100 before both browser + hero are actually done.
-    target=Math.min((heroProgress>=1 && pageReady>=1) ? 1 : .985, weighted);
+    target=Math.min((heroProgress>=1&&pageReady>=1)?1:.985,weighted);
   }
 
   function finish(){
@@ -237,7 +173,6 @@ if (!overlay || !percentEl || !lineEl || !canvas) {
     displayed=1;
     percentEl.textContent='100%';
     lineEl.style.transform='scaleX(1)';
-
     window.setTimeout(()=>{
       overlay.classList.add('is-leaving');
       root.classList.remove('is-loading');
@@ -245,46 +180,45 @@ if (!overlay || !percentEl || !lineEl || !canvas) {
     },280);
   }
 
+  const shapes=[sphere,cube,pyramid];
+
   function animate(now){
     computeTarget();
-
-    // Smooth visual progress, but don't fake completion.
-    displayed += (target-displayed)*.055;
-    if(target>.99 && displayed>.985) displayed=1;
+    displayed+=(target-displayed)*.055;
+    if(target>.99&&displayed>.985)displayed=1;
 
     const pct=Math.max(0,Math.min(100,Math.round(displayed*100)));
     percentEl.textContent=`${pct}%`;
     lineEl.style.transform=`scaleX(${displayed.toFixed(4)})`;
 
-    // Morph continuously through cube -> sphere -> pyramid.
     if(!reduceMotion){
-      const cycle=(now*.00042)%3;
+      // About 3.2s for a full sphere -> cube -> pyramid -> sphere loop.
+      const cycle=(now*.00093)%3;
       const from=Math.floor(cycle);
       const to=(from+1)%3;
       const raw=cycle-from;
       const eased=raw*raw*(3-2*raw);
       const a=shapes[from], b=shapes[to];
       const pos=geom.attributes.position.array;
-      for(let i=0;i<pos.length;i++){
-        pos[i]=THREE.MathUtils.lerp(a[i],b[i],eased);
-      }
+      for(let i=0;i<pos.length;i++) pos[i]=THREE.MathUtils.lerp(a[i],b[i],eased);
       geom.attributes.position.needsUpdate=true;
+      geom.computeVertexNormals();
 
-      group.rotation.x=now*.00013;
-      group.rotation.y=now*.00019;
-      group.rotation.z=Math.sin(now*.00011)*.08;
+      group.rotation.y=.35+now*.00016;
+      group.rotation.x=-.18+Math.sin(now*.00034)*.055;
+      group.position.y=Math.sin(now*.00045)*.035;
+      shadow.material.opacity=.15+Math.sin(now*.00045)*.018;
     }
 
     renderer.render(scene,camera);
 
-    if(!finished && heroProgress>=1 && pageReady>=1 && displayed>.985){
+    if(!finished&&heroProgress>=1&&pageReady>=1&&displayed>.985){
       finish();
-    }else if(!finished && now-started>18000){
-      // Fail-open protection: never trap the user on the loader.
+    }else if(!finished&&now-started>18000){
       finish();
     }
 
-    if(!finished) requestAnimationFrame(animate);
+    if(!finished)requestAnimationFrame(animate);
   }
 
   requestAnimationFrame(animate);
