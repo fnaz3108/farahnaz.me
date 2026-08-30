@@ -24,41 +24,13 @@ css.textContent = `
   }
   .birthday-stars{position:absolute;inset:0;pointer-events:none;opacity:.5;background-image:radial-gradient(rgba(255,255,255,.9) .7px,transparent .8px);background-size:34px 34px;mask-image:linear-gradient(to bottom,#000,transparent 92%);}
   .birthday-shape{position:absolute;pointer-events:none;opacity:.98;transform-style:preserve-3d;will-change:transform;}
-  .birthday-sphere{
-    width:180px;aspect-ratio:1;border-radius:50%;left:6vw;top:12vh;
-    background:
-      radial-gradient(circle at 29% 22%,#fff6c8 0 4%,#f6d86b 15%,#e8b93f 38%,#b77b12 69%,#5e3705 100%);
-    box-shadow:inset -24px -30px 42px rgba(61,34,0,.48),inset 18px 15px 26px rgba(255,249,207,.22),0 32px 55px rgba(0,0,0,.48),0 0 42px rgba(232,185,63,.14);
-    animation:bdayFloat 9s ease-in-out infinite;
-  }
-  .birthday-sphere::after{
-    content:"";position:absolute;left:18%;right:8%;height:22%;bottom:-31%;border-radius:50%;
-    background:rgba(0,0,0,.38);filter:blur(15px);transform:rotate(-5deg);
-  }
-  .birthday-cube{
-    width:142px;height:142px;right:8vw;top:16vh;border-radius:16px;
-    background:linear-gradient(135deg,#f8d963 0%,#e8b93f 42%,#a9680b 100%);
-    border:1px solid rgba(255,240,170,.35);
-    box-shadow:inset 16px 14px 24px rgba(255,247,196,.22),inset -22px -24px 34px rgba(91,48,0,.38),0 34px 55px rgba(0,0,0,.48),0 0 34px rgba(232,185,63,.12);
-    transform:perspective(700px) rotateX(18deg) rotateY(-28deg) rotateZ(18deg);
-    animation:bdayCube 11s ease-in-out infinite;
-  }
-  .birthday-cube::before{
-    content:"";position:absolute;inset:8px;border-radius:11px;border-top:1px solid rgba(255,250,218,.34);border-left:1px solid rgba(255,250,218,.18);opacity:.75;
-  }
-  .birthday-cube::after{
-    content:"";position:absolute;left:12%;right:-9%;height:24%;bottom:-39%;border-radius:50%;background:rgba(0,0,0,.4);filter:blur(14px);transform:rotate(-9deg);
-  }
-  .birthday-pyramid{
-    width:172px;height:150px;right:10vw;bottom:8vh;
-    clip-path:polygon(50% 0,100% 100%,0 100%);
-    background:linear-gradient(112deg,#f8da67 0 49.5%,#b87810 50% 72%,#6f4106 100%);
-    filter:drop-shadow(0 30px 28px rgba(0,0,0,.46)) drop-shadow(0 0 20px rgba(232,185,63,.12));
-    animation:bdayPyramid 10s ease-in-out infinite;
-  }
-  .birthday-pyramid::before{
-    content:"";position:absolute;inset:0;clip-path:polygon(50% 0,50% 100%,0 100%);background:linear-gradient(130deg,rgba(255,249,206,.34),transparent 58%);
-  }
+  .birthday-sphere{width:180px;aspect-ratio:1;border-radius:50%;left:6vw;top:12vh;background:radial-gradient(circle at 29% 22%,#fff6c8 0 4%,#f6d86b 15%,#e8b93f 38%,#b77b12 69%,#5e3705 100%);box-shadow:inset -24px -30px 42px rgba(61,34,0,.48),inset 18px 15px 26px rgba(255,249,207,.22),0 32px 55px rgba(0,0,0,.48),0 0 42px rgba(232,185,63,.14);animation:bdayFloat 9s ease-in-out infinite;}
+  .birthday-sphere::after{content:"";position:absolute;left:18%;right:8%;height:22%;bottom:-31%;border-radius:50%;background:rgba(0,0,0,.38);filter:blur(15px);transform:rotate(-5deg);}
+  .birthday-cube{width:142px;height:142px;right:8vw;top:16vh;border-radius:16px;background:linear-gradient(135deg,#f8d963 0%,#e8b93f 42%,#a9680b 100%);border:1px solid rgba(255,240,170,.35);box-shadow:inset 16px 14px 24px rgba(255,247,196,.22),inset -22px -24px 34px rgba(91,48,0,.38),0 34px 55px rgba(0,0,0,.48),0 0 34px rgba(232,185,63,.12);transform:perspective(700px) rotateX(18deg) rotateY(-28deg) rotateZ(18deg);animation:bdayCube 11s ease-in-out infinite;}
+  .birthday-cube::before{content:"";position:absolute;inset:8px;border-radius:11px;border-top:1px solid rgba(255,250,218,.34);border-left:1px solid rgba(255,250,218,.18);opacity:.75;}
+  .birthday-cube::after{content:"";position:absolute;left:12%;right:-9%;height:24%;bottom:-39%;border-radius:50%;background:rgba(0,0,0,.4);filter:blur(14px);transform:rotate(-9deg);}
+  .birthday-pyramid{width:172px;height:150px;right:10vw;bottom:8vh;clip-path:polygon(50% 0,100% 100%,0 100%);background:linear-gradient(112deg,#f8da67 0 49.5%,#b87810 50% 72%,#6f4106 100%);filter:drop-shadow(0 30px 28px rgba(0,0,0,.46)) drop-shadow(0 0 20px rgba(232,185,63,.12));animation:bdayPyramid 10s ease-in-out infinite;}
+  .birthday-pyramid::before{content:"";position:absolute;inset:0;clip-path:polygon(50% 0,50% 100%,0 100%);background:linear-gradient(130deg,rgba(255,249,206,.34),transparent 58%);}
   @keyframes bdayFloat{0%,100%{transform:translate3d(0,0,0) rotate(-2deg)}50%{transform:translate3d(16px,-20px,18px) rotate(3deg)}}
   @keyframes bdayCube{0%,100%{transform:perspective(700px) rotateX(18deg) rotateY(-28deg) rotateZ(18deg) translateY(0)}50%{transform:perspective(700px) rotateX(28deg) rotateY(-12deg) rotateZ(27deg) translateY(-18px)}}
   @keyframes bdayPyramid{0%,100%{transform:perspective(700px) rotateY(-12deg) rotateZ(-5deg) translateY(0)}50%{transform:perspective(700px) rotateY(10deg) rotateZ(3deg) translateY(-16px)}}
@@ -78,7 +50,9 @@ css.textContent = `
   html.birthday-open,html.birthday-open body{overflow:hidden;}
 
   .birthday-unlock{position:fixed;inset:0;z-index:181;display:grid;place-items:center;background:rgba(8,8,9,.78);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);}
-  .birthday-unlock-card{width:min(430px,88vw);padding:34px;background:#111113;color:#f5f1e8;border:1px solid rgba(255,255,255,.12);}
+  .birthday-unlock-card{position:relative;width:min(430px,88vw);padding:34px;background:#111113;color:#f5f1e8;border:1px solid rgba(255,255,255,.12);}
+  .birthday-unlock-close{position:absolute;right:16px;top:14px;color:#aaa69e;cursor:pointer;font:700 .62rem/1 'Manrope','Helvetica Neue',sans-serif;letter-spacing:.12em;text-transform:uppercase;padding:6px;}
+  .birthday-unlock-close:hover{color:#f5f1e8;}
   .birthday-unlock-card p{margin:0 0 18px;color:#aaa69e;font:600 .68rem/1.5 'Manrope','Helvetica Neue',sans-serif;letter-spacing:.12em;text-transform:uppercase;}
   .birthday-unlock-card h3{margin:0 0 24px;font:800 2rem/1 'Manrope','Helvetica Neue',sans-serif;letter-spacing:-.04em;}
   .birthday-unlock-row{display:flex;gap:10px;}
@@ -123,9 +97,6 @@ document.body.appendChild(modal);
 const closeBtn = modal.querySelector('.birthday-close');
 const soundBtn = modal.querySelector('.birthday-sound');
 const soundLabel = soundBtn.querySelector('span');
-
-// Birthday audio is now a normal media element instead of the old synthesized melody.
-// This makes pause/close deterministic: closing the card stops and rewinds it immediately.
 const birthdayAudio = new Audio('assets/birthday-happy.mp3');
 birthdayAudio.loop = true;
 birthdayAudio.preload = 'auto';
@@ -133,85 +104,43 @@ birthdayAudio.volume = 0.14;
 let audioStarted = false;
 
 async function startSound(){
-  try{
-    await birthdayAudio.play();
-    audioStarted = true;
-    soundBtn.classList.remove('is-muted');
-    soundLabel.textContent='Sound on';
-  }catch(e){
-    audioStarted = false;
-    soundBtn.classList.add('is-muted');
-    soundLabel.textContent='Tap for sound';
-  }
+  try{await birthdayAudio.play();audioStarted=true;soundBtn.classList.remove('is-muted');soundLabel.textContent='Sound on';}
+  catch(e){audioStarted=false;soundBtn.classList.add('is-muted');soundLabel.textContent='Tap for sound';}
 }
-
-function stopSound(){
-  birthdayAudio.pause();
-  birthdayAudio.currentTime = 0;
-  audioStarted = false;
-  soundBtn.classList.add('is-muted');
-  soundLabel.textContent='Sound off';
-}
-
-function openBirthday(){
-  modal.classList.add('is-open');
-  modal.setAttribute('aria-hidden','false');
-  document.documentElement.classList.add('birthday-open');
-  window.setTimeout(()=>closeBtn.focus(),700);
-  startSound();
-  const unlockOnFirstGesture=()=>{if(!audioStarted)startSound();};
-  modal.addEventListener('pointerdown',unlockOnFirstGesture,{once:true});
-}
-
-function closeBirthday(){
-  modal.classList.remove('is-open');
-  modal.setAttribute('aria-hidden','true');
-  document.documentElement.classList.remove('birthday-open');
-  stopSound();
-}
+function stopSound(){birthdayAudio.pause();birthdayAudio.currentTime=0;audioStarted=false;soundBtn.classList.add('is-muted');soundLabel.textContent='Sound off';}
+function openBirthday(){modal.classList.add('is-open');modal.setAttribute('aria-hidden','false');document.documentElement.classList.add('birthday-open');window.setTimeout(()=>closeBtn.focus(),700);startSound();const unlockOnFirstGesture=()=>{if(!audioStarted)startSound();};modal.addEventListener('pointerdown',unlockOnFirstGesture,{once:true});}
+function closeBirthday(){modal.classList.remove('is-open');modal.setAttribute('aria-hidden','true');document.documentElement.classList.remove('birthday-open');stopSound();}
 
 closeBtn.addEventListener('click',closeBirthday);
-soundBtn.addEventListener('click',()=>{
-  if(soundBtn.classList.contains('is-muted')) startSound();
-  else stopSound();
-});
+soundBtn.addEventListener('click',()=>{if(soundBtn.classList.contains('is-muted'))startSound();else stopSound();});
 window.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('is-open'))closeBirthday();});
 window.addEventListener('pagehide',stopSound);
-document.addEventListener('visibilitychange',()=>{if(document.hidden && !modal.classList.contains('is-open')) stopSound();});
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&!modal.classList.contains('is-open'))stopSound();});
 
 function showSecretUnlock(){
-  const unlock = document.createElement('div');
-  unlock.className = 'birthday-unlock';
-  unlock.innerHTML = `
+  const unlock=document.createElement('div');
+  unlock.className='birthday-unlock';
+  unlock.innerHTML=`
     <div class="birthday-unlock-card" role="dialog" aria-modal="true" aria-labelledby="birthdayUnlockTitle">
+      <button class="birthday-unlock-close" type="button" aria-label="Close secret birthday prompt">Close ×</button>
       <p>Private birthday card</p>
       <h3 id="birthdayUnlockTitle">Enter the secret code.</h3>
-      <div class="birthday-unlock-row"><input type="password" autocomplete="off" aria-label="Secret birthday code"><button type="button">Unlock</button></div>
+      <div class="birthday-unlock-row"><input type="password" autocomplete="off" aria-label="Secret birthday code"><button class="birthday-unlock-submit" type="button">Unlock</button></div>
       <p class="birthday-unlock-error" aria-live="polite"></p>
     </div>`;
   document.body.appendChild(unlock);
   const input=unlock.querySelector('input');
-  const button=unlock.querySelector('button');
+  const button=unlock.querySelector('.birthday-unlock-submit');
+  const unlockClose=unlock.querySelector('.birthday-unlock-close');
   const error=unlock.querySelector('.birthday-unlock-error');
-  const submit=()=>{
-    if(input.value.trim().toUpperCase()===SECRET_CODE){unlock.remove();openBirthday();}
-    else{error.textContent='That code is not quite right.';input.select();}
-  };
+  const closeUnlock=()=>unlock.remove();
+  const submit=()=>{if(input.value.trim().toUpperCase()===SECRET_CODE){unlock.remove();openBirthday();}else{error.textContent='That code is not quite right.';input.select();}};
   button.addEventListener('click',submit);
-  input.addEventListener('keydown',e=>{if(e.key==='Enter')submit();});
+  unlockClose.addEventListener('click',closeUnlock);
+  unlock.addEventListener('click',e=>{if(e.target===unlock)closeUnlock();});
+  input.addEventListener('keydown',e=>{if(e.key==='Enter')submit();if(e.key==='Escape')closeUnlock();});
   window.setTimeout(()=>input.focus(),100);
 }
 
-function launchWhenReady(){
-  if(inBirthdayWindow){
-    window.setTimeout(openBirthday,460);
-  }else if(secretRequested){
-    window.setTimeout(showSecretUnlock,460);
-  }
-}
-
-if(document.querySelector('#sitePreloader')){
-  window.addEventListener('farah:preloader-complete',launchWhenReady,{once:true});
-}else{
-  launchWhenReady();
-}
+function launchWhenReady(){if(inBirthdayWindow){window.setTimeout(openBirthday,460);}else if(secretRequested){window.setTimeout(showSecretUnlock,460);}}
+if(document.querySelector('#sitePreloader')){window.addEventListener('farah:preloader-complete',launchWhenReady,{once:true});}else{launchWhenReady();}
