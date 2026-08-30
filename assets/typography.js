@@ -57,34 +57,57 @@ style.textContent = `
   .edge{background:rgba(232,185,63,.55);}
   .webgl-fallback{border-color:rgba(232,185,63,.28);}
 
-  /* Stronger hero UI contrast against the detailed 3D scene. */
+  /* Hero content must stay truly black over the light 3D scene. */
   .hero .kicker,
   .hero .hero-note,
   .hero .hero-link,
   .hero .hero-resume-download,
   .hero .scroll-label{
-    color:#0a0a0b;
+    color:#050505 !important;
+    opacity:1 !important;
+    text-shadow:none !important;
+  }
+  .hero .kicker,
+  .hero .hero-note{
+    font-weight:600;
   }
   .hero .hero-link,
   .hero .hero-resume-download{
-    border-color:rgba(10,10,11,.55);
+    border-color:rgba(5,5,5,.72) !important;
+    font-weight:700;
   }
   .hero .hero-link b,
-  .hero .hero-resume-download span{
-    color:#0a0a0b;
+  .hero .hero-resume-download span,
+  .hero .scroll-label span{
+    color:#050505 !important;
+  }
+
+  /* The base header uses mix-blend-mode:difference; disable it so black stays black. */
+  .site-header{
+    mix-blend-mode:normal !important;
+    color:#050505 !important;
+  }
+  .site-header .brand,
+  .site-header .main-nav,
+  .site-header .main-nav a,
+  .site-header .availability{
+    color:#050505 !important;
+    opacity:1 !important;
+    text-shadow:none !important;
   }
   .site-header .brand,
   .site-header .main-nav a,
   .site-header .availability{
-    color:#0a0a0b;
-    opacity:1;
+    font-weight:700;
   }
   .site-header .nav-home svg{
-    fill:#0a0a0b;
-    stroke:#0a0a0b;
+    fill:#050505 !important;
+    stroke:#050505 !important;
+    opacity:1 !important;
   }
   .site-header .availability i{
-    background:var(--accent);
+    background:var(--accent) !important;
+    box-shadow:0 0 14px rgba(232,185,63,.55);
   }
 
   /* Keep the About portrait fully inside its circular mask. */
