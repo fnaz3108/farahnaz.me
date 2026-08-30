@@ -1,3 +1,4 @@
+import './birthday-card.js';
 import * as THREE from 'three';
 
 const root = document.documentElement;
