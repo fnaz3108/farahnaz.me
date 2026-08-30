@@ -1,5 +1,5 @@
 const accent = '#e8b93f';
-const inquiryRecipient = 'abl.dzynr@gmail.com';
+const inquiryRecipient = 'fnaz3108@gmail.com';
 const publicContactEmail = 'fnaz3108@gmail.com';
 
 const style = document.createElement('style');
