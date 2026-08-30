@@ -1,5 +1,6 @@
 const accent = '#e8b93f';
-const inquiryEmail = 'abl.dzynr@gmail.com';
+const inquiryRecipient = 'abl.dzynr@gmail.com';
+const publicContactEmail = 'fnaz3108@gmail.com';
 
 const style = document.createElement('style');
 style.textContent = `
@@ -54,9 +55,10 @@ style.textContent = `
     grid-column:1/-1;justify-self:start;margin-top:8px;padding:14px 19px;border-radius:999px;
     background:${accent};color:#0a0a0b;cursor:pointer;
     font:800 .62rem/1 'Manrope','Helvetica Neue',sans-serif;letter-spacing:.13em;text-transform:uppercase;
-    transition:transform .25s ease;
+    transition:transform .25s ease,opacity .2s ease;
   }
   .inquiry-submit:hover{transform:translateY(-2px);}
+  .inquiry-submit:disabled{opacity:.55;cursor:wait;transform:none;}
   .inquiry-fallback{grid-column:1/-1;margin:4px 0 0;color:#777;font-size:.68rem;line-height:1.6;}
   .inquiry-fallback a{color:#c9c5bc;border-bottom:1px solid rgba(255,255,255,.22);}
   .inquiry-status{grid-column:1/-1;min-height:18px;margin:0;color:${accent};font-size:.68rem;line-height:1.5;}
@@ -89,7 +91,7 @@ modal.innerHTML = `
       <div class="inquiry-field full"><label for="inquiryMessage">Tell me about the project</label><textarea id="inquiryMessage" name="message" required></textarea></div>
       <button class="inquiry-submit" type="submit">Send Inquiry ↗</button>
       <p class="inquiry-status" aria-live="polite"></p>
-      <p class="inquiry-fallback">Prefer email? <a href="mailto:${inquiryEmail}">${inquiryEmail}</a></p>
+      <p class="inquiry-fallback">Prefer email? <a href="mailto:${publicContactEmail}">${publicContactEmail}</a></p>
     </form>
   </section>`;
 document.body.appendChild(modal);
@@ -118,6 +120,7 @@ if (footerEmail) {
 const closeBtn = modal.querySelector('.inquiry-close');
 const form = modal.querySelector('#inquiryForm');
 const status = modal.querySelector('.inquiry-status');
+const submitBtn = modal.querySelector('.inquiry-submit');
 let lastTrigger = null;
 
 function openModal(trigger){
@@ -142,15 +145,50 @@ closeBtn.addEventListener('click',closeModal);
 modal.addEventListener('click',e=>{if(e.target===modal)closeModal();});
 window.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('is-open'))closeModal();});
 
-form.addEventListener('submit',e=>{
+form.addEventListener('submit',async e=>{
   e.preventDefault();
+  if (!form.reportValidity()) return;
+
   const data = new FormData(form);
-  const name = String(data.get('name') || '').trim();
-  const email = String(data.get('email') || '').trim();
-  const type = String(data.get('project_type') || '').trim();
-  const message = String(data.get('message') || '').trim();
-  const subject = encodeURIComponent(`Portfolio inquiry — ${type || 'New project'} from ${name}`);
-  const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nProject type: ${type}\n\n${message}`);
-  status.textContent = 'Opening your email app to send the inquiry…';
-  window.location.href = `mailto:${inquiryEmail}?subject=${subject}&body=${body}`;
+  const payload = {
+    name: String(data.get('name') || '').trim(),
+    email: String(data.get('email') || '').trim(),
+    project_type: String(data.get('project_type') || '').trim(),
+    message: String(data.get('message') || '').trim(),
+    _subject: 'New FarahNaz.me portfolio inquiry',
+    _template: 'table'
+  };
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Sending…';
+  status.textContent = 'Sending your inquiry…';
+
+  try {
+    const response = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(inquiryRecipient)}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const result = await response.json().catch(()=>({}));
+    if (!response.ok || result.success === false) throw new Error(result.message || 'Submission failed');
+
+    status.textContent = 'Thanks — your inquiry has been sent.';
+    form.reset();
+    submitBtn.textContent = 'Sent ✓';
+    window.setTimeout(()=>{
+      closeModal();
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send Inquiry ↗';
+      status.textContent = '';
+    },1800);
+  } catch (error) {
+    console.error('Inquiry submission failed:', error);
+    status.textContent = 'Could not send right now. Please try again or use Farah’s email below.';
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Send Inquiry ↗';
+  }
 });
