@@ -1,5 +1,6 @@
-import './birthday-card.js';
 import * as THREE from 'three';
+import './birthday-card.js';
+import './birthday-objects.js';
 
 const root = document.documentElement;
 const overlay = document.querySelector('#sitePreloader');
@@ -9,7 +10,6 @@ const canvas = document.querySelector('#preloaderGeometry');
 
 if (!overlay || !percentEl || !lineEl || !canvas) {
   root.classList.remove('is-loading');
-  window.dispatchEvent(new Event('farah:preloader-complete'));
 } else {
   root.classList.add('is-loading');
 
