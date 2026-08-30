@@ -15,8 +15,11 @@ style.textContent = `
     letter-spacing:-.065em;
     line-height:.76;
   }
+  .hero h1 span:first-child{
+    color:#f5f1e8;
+  }
   .hero h1 span:last-child{
-    color:rgba(22,22,23,.96);
+    color:#0a0a0b;
     -webkit-text-stroke:1px rgba(255,255,255,.78);
     paint-order:stroke fill;
   }
@@ -53,6 +56,36 @@ style.textContent = `
   .face{border-color:rgba(232,185,63,.55);}
   .edge{background:rgba(232,185,63,.55);}
   .webgl-fallback{border-color:rgba(232,185,63,.28);}
+
+  /* Stronger hero UI contrast against the detailed 3D scene. */
+  .hero .kicker,
+  .hero .hero-note,
+  .hero .hero-link,
+  .hero .hero-resume-download,
+  .hero .scroll-label{
+    color:#0a0a0b;
+  }
+  .hero .hero-link,
+  .hero .hero-resume-download{
+    border-color:rgba(10,10,11,.55);
+  }
+  .hero .hero-link b,
+  .hero .hero-resume-download span{
+    color:#0a0a0b;
+  }
+  .site-header .brand,
+  .site-header .main-nav a,
+  .site-header .availability{
+    color:#0a0a0b;
+    opacity:1;
+  }
+  .site-header .nav-home svg{
+    fill:#0a0a0b;
+    stroke:#0a0a0b;
+  }
+  .site-header .availability i{
+    background:var(--accent);
+  }
 
   /* Keep the About portrait fully inside its circular mask. */
   .portrait-orbit{
