@@ -1,7 +1,5 @@
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
-import { FontLoader } from 'three/addons/loaders/FontLoader.js';
-import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
 function initBirthdayObjects(){
   const modal=document.querySelector('#birthdayModal');
@@ -12,24 +10,42 @@ function initBirthdayObjects(){
     .birthday-modal .birthday-shape{display:none!important;}
     .birthday-modal .birthday-title em{display:none!important;}
     .birthday-three-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;filter:drop-shadow(0 24px 28px rgba(0,0,0,.26));}
-    .birthday-farah-3d{position:absolute;left:50%;top:49%;z-index:2;color:#e8b93f;font:900 clamp(2.5rem,5vw,5.8rem)/.85 'Manrope','Helvetica Neue',sans-serif;letter-spacing:-.06em;transform:translate(-50%,-50%) perspective(700px) rotateX(7deg) rotateY(10deg) rotateZ(-2deg);text-shadow:1px 1px 0 #d3a126,2px 2px 0 #bd8d19,3px 3px 0 #a97810,4px 4px 0 #8f6209,8px 14px 22px rgba(0,0,0,.42);pointer-events:none;user-select:none;white-space:nowrap;}
-    @media(max-width:700px){.birthday-farah-3d{top:47%;font-size:2.3rem;}}
+    .birthday-farah-3d{
+      position:absolute;left:50%;top:49%;z-index:2;
+      color:#e8b93f;
+      font:800 clamp(3rem,5.2vw,6rem)/.85 'Manrope','Helvetica Neue',sans-serif;
+      letter-spacing:-.075em;
+      text-transform:none!important;
+      transform:translate(-50%,-50%) perspective(700px) rotateX(7deg) rotateY(8deg) rotateZ(-2deg);
+      text-shadow:
+        1px 1px 0 #d3a126,
+        2px 2px 0 #bd8d19,
+        3px 3px 0 #a97810,
+        4px 4px 0 #8f6209,
+        5px 5px 0 #775006,
+        10px 16px 24px rgba(0,0,0,.42);
+      pointer-events:none;user-select:none;white-space:nowrap;
+    }
+    @media(max-width:700px){.birthday-farah-3d{top:47%;font-size:2.7rem;}}
   `;
   document.head.appendChild(style);
 
-  const fallbackText=document.createElement('div');fallbackText.className='birthday-farah-3d';fallbackText.textContent='Farah';fallbackText.setAttribute('aria-hidden','true');modal.appendChild(fallbackText);
+  const farahText=document.createElement('div');
+  farahText.className='birthday-farah-3d';
+  farahText.textContent='Farah';
+  farahText.setAttribute('aria-hidden','true');
+  modal.appendChild(farahText);
+
   const canvas=document.createElement('canvas');canvas.className='birthday-three-canvas';canvas.setAttribute('aria-hidden','true');modal.insertBefore(canvas,modal.firstChild);
   const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:'low-power'});renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.7));renderer.setClearColor(0x000000,0);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.08;
   const scene=new THREE.Scene();const camera=new THREE.PerspectiveCamera(32,1,.1,30);camera.position.set(0,0,9);scene.add(new THREE.HemisphereLight(0xfff3c2,0x211406,1.35));
   const key=new THREE.DirectionalLight(0xfff7dd,3.1);key.position.set(-4,6,8);scene.add(key);const fill=new THREE.DirectionalLight(0xe8b93f,1.1);fill.position.set(5,1,4);scene.add(fill);const rim=new THREE.DirectionalLight(0xffc83d,1.2);rim.position.set(2,4,-4);scene.add(rim);
   const gold=new THREE.MeshPhysicalMaterial({color:0xe8b93f,roughness:.34,metalness:.08,clearcoat:.42,clearcoatRoughness:.26});
   const sphere=new THREE.Mesh(new THREE.SphereGeometry(.82,48,48),gold.clone());sphere.material.roughness=.28;scene.add(sphere);const cube=new THREE.Mesh(new RoundedBoxGeometry(1.45,1.45,1.45,8,.12),gold.clone());cube.rotation.set(.44,-.58,.22);scene.add(cube);const pyramid=new THREE.Mesh(new THREE.ConeGeometry(.98,1.72,4,1,false,Math.PI/4),gold.clone());pyramid.rotation.set(-.08,.48,-.08);scene.add(pyramid);
-  let farahText=null;
-  new FontLoader().load('https://threejs.org/examples/fonts/helvetiker_bold.typeface.json',font=>{const geometry=new TextGeometry('Farah',{font,size:.68,depth:.22,curveSegments:8,bevelEnabled:true,bevelThickness:.025,bevelSize:.018,bevelSegments:3});geometry.center();farahText=new THREE.Mesh(geometry,gold.clone());farahText.material.roughness=.27;farahText.material.metalness=.12;farahText.rotation.set(-.08,-.08,-.025);scene.add(farahText);fallbackText.style.display='none';layout();},undefined,()=>{fallbackText.style.display='block';});
   const glowMaterial=new THREE.MeshBasicMaterial({color:0xe8b93f,transparent:true,opacity:.055,depthWrite:false});const glowA=new THREE.Mesh(new THREE.SphereGeometry(1.03,24,24),glowMaterial);scene.add(glowA);const glowB=new THREE.Mesh(new THREE.SphereGeometry(1.08,24,24),glowMaterial.clone());scene.add(glowB);const glowC=new THREE.Mesh(new THREE.SphereGeometry(1.15,24,24),glowMaterial.clone());scene.add(glowC);let baseSphereY=0;
-  function layout(){const w=Math.max(1,modal.clientWidth),h=Math.max(1,modal.clientHeight);renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();const wide=w>700,spanX=wide?3.72:2.3;sphere.position.set(-spanX,wide?1.9:2.48,0);baseSphereY=sphere.position.y;cube.position.set(spanX,wide?1.85:2.18,-.15);pyramid.position.set(wide?3.55:2.2,wide?-2.35:-2.78,.05);const scale=wide?.78:.56;sphere.scale.setScalar(scale);cube.scale.setScalar(scale);pyramid.scale.setScalar(scale);if(farahText){farahText.position.set(0,wide?-.12:-.18,.28);farahText.scale.setScalar(wide?.78:.58);}glowA.position.copy(sphere.position);glowA.scale.copy(sphere.scale);glowB.position.copy(cube.position);glowB.scale.copy(cube.scale);glowC.position.copy(pyramid.position);glowC.scale.copy(pyramid.scale);}
+  function layout(){const w=Math.max(1,modal.clientWidth),h=Math.max(1,modal.clientHeight);renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();const wide=w>700,spanX=wide?3.72:2.3;sphere.position.set(-spanX,wide?1.9:2.48,0);baseSphereY=sphere.position.y;cube.position.set(spanX,wide?1.85:2.18,-.15);pyramid.position.set(wide?3.55:2.2,wide?-2.35:-2.78,.05);const scale=wide?.78:.56;sphere.scale.setScalar(scale);cube.scale.setScalar(scale);pyramid.scale.setScalar(scale);glowA.position.copy(sphere.position);glowA.scale.copy(sphere.scale);glowB.position.copy(cube.position);glowB.scale.copy(cube.scale);glowC.position.copy(pyramid.position);glowC.scale.copy(pyramid.scale);}
   layout();window.addEventListener('resize',layout,{passive:true});const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;let raf=0;
-  function animate(t){const s=t*.001;if(!reduceMotion){sphere.position.y=baseSphereY+Math.sin(s*.72)*.045;sphere.rotation.y=s*.16;glowA.position.copy(sphere.position);cube.rotation.x=.44+Math.sin(s*.42)*.15;cube.rotation.y=-.58+s*.22;cube.rotation.z=.22+Math.sin(s*.34)*.08;pyramid.rotation.y=.48+s*.18;pyramid.rotation.z=-.08+Math.sin(s*.46)*.08;pyramid.rotation.x=-.08+Math.sin(s*.31)*.05;if(farahText){farahText.rotation.y=-.08+Math.sin(s*.36)*.07;farahText.rotation.x=-.08+Math.sin(s*.28)*.03;}}renderer.render(scene,camera);raf=requestAnimationFrame(animate);}raf=requestAnimationFrame(animate);
+  function animate(t){const s=t*.001;if(!reduceMotion){sphere.position.y=baseSphereY+Math.sin(s*.72)*.045;sphere.rotation.y=s*.16;glowA.position.copy(sphere.position);cube.rotation.x=.44+Math.sin(s*.42)*.15;cube.rotation.y=-.58+s*.22;cube.rotation.z=.22+Math.sin(s*.34)*.08;pyramid.rotation.y=.48+s*.18;pyramid.rotation.z=-.08+Math.sin(s*.46)*.08;pyramid.rotation.x=-.08+Math.sin(s*.31)*.05;farahText.style.transform=`translate(-50%,-50%) perspective(700px) rotateX(${7+Math.sin(s*.28)*1.5}deg) rotateY(${8+Math.sin(s*.36)*2.5}deg) rotateZ(-2deg)`;}renderer.render(scene,camera);raf=requestAnimationFrame(animate);}raf=requestAnimationFrame(animate);
   const observer=new MutationObserver(()=>{if(!document.body.contains(modal)){cancelAnimationFrame(raf);window.removeEventListener('resize',layout);observer.disconnect();renderer.dispose();}});observer.observe(document.body,{childList:true,subtree:true});
 }
 if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',initBirthdayObjects,{once:true});}else{initBirthdayObjects();}
