@@ -1,4 +1,5 @@
 const accent = '#e8b93f';
+const inquiryEmail = 'abl.dzynr@gmail.com';
 
 const style = document.createElement('style');
 style.textContent = `
@@ -88,7 +89,7 @@ modal.innerHTML = `
       <div class="inquiry-field full"><label for="inquiryMessage">Tell me about the project</label><textarea id="inquiryMessage" name="message" required></textarea></div>
       <button class="inquiry-submit" type="submit">Send Inquiry ↗</button>
       <p class="inquiry-status" aria-live="polite"></p>
-      <p class="inquiry-fallback">Prefer email? <a href="mailto:fnaz3108@gmail.com">fnaz3108@gmail.com</a></p>
+      <p class="inquiry-fallback">Prefer email? <a href="mailto:${inquiryEmail}">${inquiryEmail}</a></p>
     </form>
   </section>`;
 document.body.appendChild(modal);
@@ -101,11 +102,17 @@ callout.innerHTML = '<i></i><span>Start a project ↗</span>';
 document.body.appendChild(callout);
 
 const availability = document.querySelector('.availability');
+const footerEmail = document.querySelector('.contact-row a[href^="mailto:"]');
+
 if (availability) {
   availability.setAttribute('role','button');
   availability.setAttribute('tabindex','0');
   availability.setAttribute('aria-haspopup','dialog');
   availability.setAttribute('aria-controls','inquiryModal');
+}
+if (footerEmail) {
+  footerEmail.setAttribute('aria-haspopup','dialog');
+  footerEmail.setAttribute('aria-controls','inquiryModal');
 }
 
 const closeBtn = modal.querySelector('.inquiry-close');
@@ -130,6 +137,7 @@ function closeModal(){
 callout.addEventListener('click',()=>openModal(callout));
 availability?.addEventListener('click',()=>openModal(availability));
 availability?.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openModal(availability);}});
+footerEmail?.addEventListener('click',e=>{e.preventDefault();openModal(footerEmail);});
 closeBtn.addEventListener('click',closeModal);
 modal.addEventListener('click',e=>{if(e.target===modal)closeModal();});
 window.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('is-open'))closeModal();});
@@ -144,5 +152,5 @@ form.addEventListener('submit',e=>{
   const subject = encodeURIComponent(`Portfolio inquiry — ${type || 'New project'} from ${name}`);
   const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nProject type: ${type}\n\n${message}`);
   status.textContent = 'Opening your email app to send the inquiry…';
-  window.location.href = `mailto:fnaz3108@gmail.com?subject=${subject}&body=${body}`;
+  window.location.href = `mailto:${inquiryEmail}?subject=${subject}&body=${body}`;
 });
