@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import './birthday-card.js';
 import './birthday-objects.js';
+import './birthday-audio.js';
 
 const root = document.documentElement;
 const overlay = document.querySelector('#sitePreloader');
