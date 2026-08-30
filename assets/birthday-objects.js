@@ -75,22 +75,15 @@ function initBirthdayObjects(){
     camera.updateProjectionMatrix();
 
     const wide=w>700;
-    if(wide){
-      // Keep every object comfortably inside the viewport while still framing the card.
-      sphere.position.set(-3.5,1.55,.05);
-      cube.position.set(3.5,1.55,-.15);
-      pyramid.position.set(3.35,-1.65,.1);
-      sphere.scale.setScalar(.92);
-      cube.scale.setScalar(.92);
-      pyramid.scale.setScalar(.92);
-    }else{
-      sphere.position.set(-1.75,2.15,.05);
-      cube.position.set(1.75,1.95,-.15);
-      pyramid.position.set(1.65,-2.15,.1);
-      sphere.scale.setScalar(.62);
-      cube.scale.setScalar(.62);
-      pyramid.scale.setScalar(.62);
-    }
+    const spanX=wide?3.72:2.3;
+    sphere.position.set(-spanX,wide?1.9:2.48,0);
+    cube.position.set(spanX,wide?1.85:2.18,-.15);
+    pyramid.position.set(wide?3.55:2.2,wide?-2.35:-2.78,.05);
+
+    const scale=wide?.78:.56;
+    sphere.scale.setScalar(scale);
+    cube.scale.setScalar(scale);
+    pyramid.scale.setScalar(scale);
 
     glowA.position.copy(sphere.position);glowA.scale.copy(sphere.scale);
     glowB.position.copy(cube.position);glowB.scale.copy(cube.scale);
