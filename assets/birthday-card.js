@@ -23,13 +23,45 @@ css.textContent = `
     filter:blur(16px);
   }
   .birthday-stars{position:absolute;inset:0;pointer-events:none;opacity:.5;background-image:radial-gradient(rgba(255,255,255,.9) .7px,transparent .8px);background-size:34px 34px;mask-image:linear-gradient(to bottom,#000,transparent 92%);}
-  .birthday-shape{position:absolute;pointer-events:none;opacity:.9;filter:drop-shadow(0 26px 50px rgba(0,0,0,.34));}
-  .birthday-sphere{width:180px;aspect-ratio:1;border-radius:50%;left:6vw;top:12vh;background:radial-gradient(circle at 34% 28%,#d8d3ca 0,#9a968e 44%,#595752 100%);animation:bdayFloat 9s ease-in-out infinite;}
-  .birthday-cube{width:142px;height:142px;right:8vw;top:16vh;background:linear-gradient(145deg,#cbc6bd,#7f7b74);border-radius:18px;transform:rotate(22deg);animation:bdayCube 11s ease-in-out infinite;}
-  .birthday-pyramid{width:0;height:0;right:10vw;bottom:8vh;border-left:86px solid transparent;border-right:86px solid transparent;border-bottom:150px solid #a39f97;filter:drop-shadow(0 28px 50px rgba(0,0,0,.28));animation:bdayPyramid 10s ease-in-out infinite;}
-  @keyframes bdayFloat{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(16px,-20px,0)}}
-  @keyframes bdayCube{0%,100%{transform:rotate(22deg) translateY(0)}50%{transform:rotate(34deg) translateY(-18px)}}
-  @keyframes bdayPyramid{0%,100%{transform:rotate(-6deg) translateY(0)}50%{transform:rotate(3deg) translateY(-16px)}}
+  .birthday-shape{position:absolute;pointer-events:none;opacity:.98;transform-style:preserve-3d;will-change:transform;}
+  .birthday-sphere{
+    width:180px;aspect-ratio:1;border-radius:50%;left:6vw;top:12vh;
+    background:
+      radial-gradient(circle at 29% 22%,#fff6c8 0 4%,#f6d86b 15%,#e8b93f 38%,#b77b12 69%,#5e3705 100%);
+    box-shadow:inset -24px -30px 42px rgba(61,34,0,.48),inset 18px 15px 26px rgba(255,249,207,.22),0 32px 55px rgba(0,0,0,.48),0 0 42px rgba(232,185,63,.14);
+    animation:bdayFloat 9s ease-in-out infinite;
+  }
+  .birthday-sphere::after{
+    content:"";position:absolute;left:18%;right:8%;height:22%;bottom:-31%;border-radius:50%;
+    background:rgba(0,0,0,.38);filter:blur(15px);transform:rotate(-5deg);
+  }
+  .birthday-cube{
+    width:142px;height:142px;right:8vw;top:16vh;border-radius:16px;
+    background:linear-gradient(135deg,#f8d963 0%,#e8b93f 42%,#a9680b 100%);
+    border:1px solid rgba(255,240,170,.35);
+    box-shadow:inset 16px 14px 24px rgba(255,247,196,.22),inset -22px -24px 34px rgba(91,48,0,.38),0 34px 55px rgba(0,0,0,.48),0 0 34px rgba(232,185,63,.12);
+    transform:perspective(700px) rotateX(18deg) rotateY(-28deg) rotateZ(18deg);
+    animation:bdayCube 11s ease-in-out infinite;
+  }
+  .birthday-cube::before{
+    content:"";position:absolute;inset:8px;border-radius:11px;border-top:1px solid rgba(255,250,218,.34);border-left:1px solid rgba(255,250,218,.18);opacity:.75;
+  }
+  .birthday-cube::after{
+    content:"";position:absolute;left:12%;right:-9%;height:24%;bottom:-39%;border-radius:50%;background:rgba(0,0,0,.4);filter:blur(14px);transform:rotate(-9deg);
+  }
+  .birthday-pyramid{
+    width:172px;height:150px;right:10vw;bottom:8vh;
+    clip-path:polygon(50% 0,100% 100%,0 100%);
+    background:linear-gradient(112deg,#f8da67 0 49.5%,#b87810 50% 72%,#6f4106 100%);
+    filter:drop-shadow(0 30px 28px rgba(0,0,0,.46)) drop-shadow(0 0 20px rgba(232,185,63,.12));
+    animation:bdayPyramid 10s ease-in-out infinite;
+  }
+  .birthday-pyramid::before{
+    content:"";position:absolute;inset:0;clip-path:polygon(50% 0,50% 100%,0 100%);background:linear-gradient(130deg,rgba(255,249,206,.34),transparent 58%);
+  }
+  @keyframes bdayFloat{0%,100%{transform:translate3d(0,0,0) rotate(-2deg)}50%{transform:translate3d(16px,-20px,18px) rotate(3deg)}}
+  @keyframes bdayCube{0%,100%{transform:perspective(700px) rotateX(18deg) rotateY(-28deg) rotateZ(18deg) translateY(0)}50%{transform:perspective(700px) rotateX(28deg) rotateY(-12deg) rotateZ(27deg) translateY(-18px)}}
+  @keyframes bdayPyramid{0%,100%{transform:perspective(700px) rotateY(-12deg) rotateZ(-5deg) translateY(0)}50%{transform:perspective(700px) rotateY(10deg) rotateZ(3deg) translateY(-16px)}}
   .birthday-close{position:absolute;right:28px;top:24px;z-index:3;color:#f5f1e8;cursor:pointer;font:700 .64rem/1 'Manrope','Helvetica Neue',sans-serif;letter-spacing:.14em;text-transform:uppercase;padding:10px 0;}
   .birthday-close::after{content:"";position:absolute;left:0;right:0;bottom:3px;height:1px;background:#e8b93f;transform-origin:left;transition:transform .25s ease;}
   .birthday-close:hover::after{transform:scaleX(.45);}
@@ -60,7 +92,7 @@ css.textContent = `
     .birthday-message{font-size:.92rem;padding:0 7vw;}
     .birthday-sphere{width:110px;left:-20px;top:10vh;}
     .birthday-cube{width:90px;height:90px;right:-10px;top:18vh;}
-    .birthday-pyramid{right:-34px;bottom:8vh;border-left-width:58px;border-right-width:58px;border-bottom-width:104px;}
+    .birthday-pyramid{width:116px;height:104px;right:-34px;bottom:8vh;}
     .birthday-close{right:18px;top:16px;}
     .birthday-sound{left:18px;bottom:17px;}
   }
