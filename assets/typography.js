@@ -110,23 +110,22 @@ style.textContent = `
     box-shadow:0 0 14px rgba(232,185,63,.55);
   }
 
-  /* About portrait: keep the image full-size and shift only the crop inside the circle. */
+  /* About portrait: enlarge slightly, then reposition the whole photo inside the mask. */
   .portrait-orbit{
     background:#292b30;
     padding:0 !important;
   }
   .portrait-orbit img{
-    position:static !important;
-    inset:auto !important;
-    top:auto !important;
-    left:auto !important;
-    width:100% !important;
-    height:100% !important;
-    max-width:100% !important;
+    position:absolute !important;
+    left:50% !important;
+    top:50% !important;
+    width:116% !important;
+    height:116% !important;
+    max-width:none !important;
     border-radius:0 !important;
     object-fit:cover !important;
-    object-position:50% 38% !important;
-    transform:none !important;
+    object-position:50% 50% !important;
+    transform:translate(-50%,-43%) !important;
   }
 
   /* Resume download actions */
