@@ -82,6 +82,12 @@ style.textContent = `
     color:#050505 !important;
   }
 
+  /* Keep the primary Start a Project CTA on the right; move 3D controls safely left. */
+  .hero .hero-world-actions{
+    left:34px !important;
+    right:auto !important;
+  }
+
   /* The base header uses mix-blend-mode:difference; disable it so black stays black. */
   .site-header{
     mix-blend-mode:normal !important;
@@ -159,6 +165,10 @@ style.textContent = `
 
   @media(max-width:900px){
     .hero-resume-download{margin-left:12vw;}
+    .hero .hero-world-actions{
+      left:18px !important;
+      right:auto !important;
+    }
 
     /* Mobile menu sits on a dark overlay, so force its content to stay visible. */
     .site-header .main-nav.is-open,
