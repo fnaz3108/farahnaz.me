@@ -110,20 +110,22 @@ style.textContent = `
     box-shadow:0 0 14px rgba(232,185,63,.55);
   }
 
-  /* Keep the About portrait centered inside the circular mask. */
+  /* Reframe the About portrait so the subject sits comfortably inside the circle. */
   .portrait-orbit{
     background:#292b30;
+    padding:9px;
   }
   .portrait-orbit img{
-    position:absolute !important;
-    inset:0 !important;
-    top:0 !important;
-    left:0 !important;
+    position:relative !important;
+    inset:auto !important;
+    top:auto !important;
+    left:auto !important;
     width:100% !important;
     height:100% !important;
     max-width:none !important;
+    border-radius:50%;
     object-fit:cover !important;
-    object-position:50% 50% !important;
+    object-position:50% 43% !important;
     transform:none !important;
   }
 
