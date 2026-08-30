@@ -110,17 +110,21 @@ style.textContent = `
     box-shadow:0 0 14px rgba(232,185,63,.55);
   }
 
-  /* Keep the About portrait fully inside its circular mask. */
+  /* Keep the About portrait centered inside the circular mask. */
   .portrait-orbit{
     background:#292b30;
   }
   .portrait-orbit img{
-    position:static !important;
-    top:auto !important;
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    object-position:center center;
+    position:absolute !important;
+    inset:0 !important;
+    top:0 !important;
+    left:0 !important;
+    width:100% !important;
+    height:100% !important;
+    max-width:none !important;
+    object-fit:cover !important;
+    object-position:50% 50% !important;
+    transform:none !important;
   }
 
   /* Resume download actions */
