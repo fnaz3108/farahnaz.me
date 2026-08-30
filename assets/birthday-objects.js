@@ -1,5 +1,7 @@
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
 function initBirthdayObjects(){
   const modal=document.querySelector('#birthdayModal');
@@ -62,12 +64,36 @@ function initBirthdayObjects(){
   pyramid.rotation.set(-.08,.48,-.08);
   scene.add(pyramid);
 
+  let farahText=null;
+  const fontLoader=new FontLoader();
+  fontLoader.load('https://cdn.jsdelivr.net/npm/three@0.185.1/examples/fonts/helvetiker_bold.typeface.json',font=>{
+    const geometry=new TextGeometry('FARAH',{
+      font,
+      size:.68,
+      depth:.22,
+      curveSegments:8,
+      bevelEnabled:true,
+      bevelThickness:.025,
+      bevelSize:.018,
+      bevelSegments:3
+    });
+    geometry.computeBoundingBox();
+    geometry.center();
+    farahText=new THREE.Mesh(geometry,gold.clone());
+    farahText.material.roughness=.27;
+    farahText.material.metalness=.12;
+    farahText.rotation.set(-.08,-.12,-.035);
+    scene.add(farahText);
+    layout();
+  });
+
   const glowMaterial=new THREE.MeshBasicMaterial({color:0xe8b93f,transparent:true,opacity:.055,depthWrite:false});
   const glowA=new THREE.Mesh(new THREE.SphereGeometry(1.03,24,24),glowMaterial);
   glowA.position.copy(sphere.position);scene.add(glowA);
   const glowB=new THREE.Mesh(new THREE.SphereGeometry(1.08,24,24),glowMaterial.clone());scene.add(glowB);
   const glowC=new THREE.Mesh(new THREE.SphereGeometry(1.15,24,24),glowMaterial.clone());scene.add(glowC);
 
+  let baseSphereY=0;
   function layout(){
     const w=Math.max(1,modal.clientWidth),h=Math.max(1,modal.clientHeight);
     renderer.setSize(w,h,false);
@@ -77,6 +103,7 @@ function initBirthdayObjects(){
     const wide=w>700;
     const spanX=wide?3.72:2.3;
     sphere.position.set(-spanX,wide?1.9:2.48,0);
+    baseSphereY=sphere.position.y;
     cube.position.set(spanX,wide?1.85:2.18,-.15);
     pyramid.position.set(wide?3.55:2.2,wide?-2.35:-2.78,.05);
 
@@ -84,6 +111,11 @@ function initBirthdayObjects(){
     sphere.scale.setScalar(scale);
     cube.scale.setScalar(scale);
     pyramid.scale.setScalar(scale);
+
+    if(farahText){
+      farahText.position.set(wide?-2.25:-.72,wide?-2.25:-1.55,.18);
+      farahText.scale.setScalar(wide?1:.68);
+    }
 
     glowA.position.copy(sphere.position);glowA.scale.copy(sphere.scale);
     glowB.position.copy(cube.position);glowB.scale.copy(cube.scale);
@@ -97,8 +129,9 @@ function initBirthdayObjects(){
   function animate(t){
     const s=t*.001;
     if(!reduceMotion){
-      sphere.position.y+=(Math.sin(s*.72)*.004);
+      sphere.position.y=baseSphereY+Math.sin(s*.72)*.045;
       sphere.rotation.y=s*.16;
+      glowA.position.copy(sphere.position);
 
       cube.rotation.x=.44+Math.sin(s*.42)*.15;
       cube.rotation.y=-.58+s*.22;
@@ -107,6 +140,11 @@ function initBirthdayObjects(){
       pyramid.rotation.y=.48+s*.18;
       pyramid.rotation.z=-.08+Math.sin(s*.46)*.08;
       pyramid.rotation.x=-.08+Math.sin(s*.31)*.05;
+
+      if(farahText){
+        farahText.rotation.y=-.12+Math.sin(s*.36)*.09;
+        farahText.rotation.x=-.08+Math.sin(s*.28)*.035;
+      }
     }
     renderer.render(scene,camera);
     raf=requestAnimationFrame(animate);
