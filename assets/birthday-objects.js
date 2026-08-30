@@ -11,9 +11,9 @@ function initBirthdayObjects(){
     .birthday-modal .birthday-title em{display:none!important;}
     .birthday-three-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;filter:drop-shadow(0 24px 28px rgba(0,0,0,.26));}
     .birthday-farah-3d{
-      position:absolute;left:50%;top:49%;z-index:2;
+      position:absolute;left:50%;top:50%;z-index:2;
       color:#e8b93f;
-      font:800 clamp(3rem,5.2vw,6rem)/.85 'Manrope','Helvetica Neue',sans-serif;
+      font:800 clamp(5.2rem,9vw,10.5rem)/.82 'Manrope','Helvetica Neue',sans-serif;
       letter-spacing:-.075em;
       text-transform:none!important;
       transform:translate(-50%,-50%) perspective(700px) rotateX(7deg) rotateY(8deg) rotateZ(-2deg);
@@ -26,7 +26,7 @@ function initBirthdayObjects(){
         10px 16px 24px rgba(0,0,0,.42);
       pointer-events:none;user-select:none;white-space:nowrap;
     }
-    @media(max-width:700px){.birthday-farah-3d{top:47%;font-size:2.7rem;}}
+    @media(max-width:700px){.birthday-farah-3d{top:48%;font-size:clamp(3.6rem,15vw,5.5rem);}}
   `;
   document.head.appendChild(style);
 
