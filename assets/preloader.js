@@ -8,6 +8,7 @@ const canvas = document.querySelector('#preloaderGeometry');
 
 if (!overlay || !percentEl || !lineEl || !canvas) {
   root.classList.remove('is-loading');
+  window.dispatchEvent(new Event('farah:preloader-complete'));
 } else {
   root.classList.add('is-loading');
 
@@ -124,6 +125,7 @@ if (!overlay || !percentEl || !lineEl || !canvas) {
     window.setTimeout(()=>{
       overlay.classList.add('is-leaving');
       root.classList.remove('is-loading');
+      window.dispatchEvent(new Event('farah:preloader-complete'));
       window.setTimeout(()=>overlay.remove(),950);
     },280);
   }
