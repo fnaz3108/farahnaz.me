@@ -52,5 +52,18 @@ style.textContent = `
   .face{border-color:rgba(232,185,63,.55);}
   .edge{background:rgba(232,185,63,.55);}
   .webgl-fallback{border-color:rgba(232,185,63,.28);}
+
+  /* Keep the About portrait fully inside its circular mask. */
+  .portrait-orbit{
+    background:#292b30;
+  }
+  .portrait-orbit img{
+    position:static !important;
+    top:auto !important;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center center;
+  }
 `;
 document.head.appendChild(style);
