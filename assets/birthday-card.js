@@ -123,55 +123,32 @@ document.body.appendChild(modal);
 const closeBtn = modal.querySelector('.birthday-close');
 const soundBtn = modal.querySelector('.birthday-sound');
 const soundLabel = soundBtn.querySelector('span');
-let audioContext = null;
-let audioTimer = null;
+
+// Birthday audio is now a normal media element instead of the old synthesized melody.
+// This makes pause/close deterministic: closing the card stops and rewinds it immediately.
+const birthdayAudio = new Audio('assets/birthday-happy.mp3');
+birthdayAudio.loop = true;
+birthdayAudio.preload = 'auto';
+birthdayAudio.volume = 0.14;
 let audioStarted = false;
-
-const melody = [
-  [392,.28],[392,.18],[440,.42],[392,.42],[523,.42],[494,.75],
-  [392,.28],[392,.18],[440,.42],[392,.42],[587,.42],[523,.75],
-  [392,.28],[392,.18],[784,.42],[659,.42],[523,.42],[494,.42],[440,.68],
-  [698,.28],[698,.18],[659,.42],[523,.42],[587,.42],[523,.75]
-];
-
-function scheduleMelody(){
-  if(!audioContext || audioContext.state !== 'running') return;
-  let t = audioContext.currentTime + .06;
-  melody.forEach(([freq,dur])=>{
-    const osc = audioContext.createOscillator();
-    const gain = audioContext.createGain();
-    osc.type = 'sine';
-    osc.frequency.value = freq;
-    gain.gain.setValueAtTime(0,t);
-    gain.gain.linearRampToValueAtTime(.035,t+.025);
-    gain.gain.exponentialRampToValueAtTime(.001,t+dur);
-    osc.connect(gain).connect(audioContext.destination);
-    osc.start(t);
-    osc.stop(t+dur+.03);
-    t += dur + .06;
-  });
-  const total = (t - audioContext.currentTime + 1.4) * 1000;
-  audioTimer = window.setTimeout(scheduleMelody,total);
-}
 
 async function startSound(){
   try{
-    if(!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    await audioContext.resume();
-    if(!audioStarted){audioStarted=true;scheduleMelody();}
+    await birthdayAudio.play();
+    audioStarted = true;
     soundBtn.classList.remove('is-muted');
     soundLabel.textContent='Sound on';
   }catch(e){
+    audioStarted = false;
     soundBtn.classList.add('is-muted');
     soundLabel.textContent='Tap for sound';
   }
 }
 
 function stopSound(){
-  if(audioTimer) window.clearTimeout(audioTimer);
-  audioTimer = null;
+  birthdayAudio.pause();
+  birthdayAudio.currentTime = 0;
   audioStarted = false;
-  if(audioContext && audioContext.state === 'running') audioContext.suspend();
   soundBtn.classList.add('is-muted');
   soundLabel.textContent='Sound off';
 }
@@ -199,6 +176,8 @@ soundBtn.addEventListener('click',()=>{
   else stopSound();
 });
 window.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('is-open'))closeBirthday();});
+window.addEventListener('pagehide',stopSound);
+document.addEventListener('visibilitychange',()=>{if(document.hidden && !modal.classList.contains('is-open')) stopSound();});
 
 function showSecretUnlock(){
   const unlock = document.createElement('div');
