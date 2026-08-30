@@ -156,8 +156,47 @@ style.textContent = `
   .about-resume-download{
     margin-top:24px;
   }
+
   @media(max-width:900px){
     .hero-resume-download{margin-left:12vw;}
+
+    /* Mobile menu sits on a dark overlay, so force its content to stay visible. */
+    .site-header .main-nav.is-open,
+    html.nav-open .site-header .main-nav{
+      color:#f5f1e8 !important;
+    }
+    .site-header .main-nav.is-open a,
+    html.nav-open .site-header .main-nav a{
+      color:#f5f1e8 !important;
+      opacity:1 !important;
+      text-shadow:none !important;
+    }
+    .site-header .main-nav.is-open .nav-home svg,
+    html.nav-open .site-header .nav-home svg{
+      fill:#f5f1e8 !important;
+      stroke:#f5f1e8 !important;
+    }
+    html.nav-open .site-header .brand{
+      color:#f5f1e8 !important;
+    }
+    html.nav-open .site-header .nav-toggle span{
+      background:#f5f1e8 !important;
+    }
+
+    /* On mobile, show the visual sphere/portrait first and the About copy below it. */
+    .about{
+      grid-template-columns:1fr !important;
+    }
+    .about-object{
+      order:1 !important;
+      min-height:520px !important;
+      width:100%;
+    }
+    .about-copy{
+      order:2 !important;
+      width:100%;
+      max-width:none;
+    }
   }
 `;
 document.head.appendChild(style);
